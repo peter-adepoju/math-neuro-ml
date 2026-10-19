@@ -26,3 +26,22 @@ The files here are small subsets of [Neuromatch Academy's trial-binned release](
 `make_steinmetz_subsets.py` rebuilds these files from the Neuromatch release.
 
 **Credit.** N. A. Steinmetz, P. Zatka-Haas, M. Carandini and K. D. Harris, "Distributed coding of choice, action and engagement across the mouse brain", *Nature* 576:266–273, 2019. The trial binning is by Neuromatch Academy (MouseLand/steinmetz2019_NMA).
+
+## Whole-cell current-clamp recordings (Lessons 21–22)
+
+Two sample recordings distributed with [pyABF](https://github.com/swharden/pyABF) (MIT licence), reduced to 10 kHz. Each sweep injects current steps into one neuron and records its membrane potential. The cell type and preparation are not documented in the source.
+
+| File | Source file | Sweeps × samples | Protocol |
+|---|---|---|---|
+| `patch_18711001_steps.npz` | `18711001.abf` | 30 × 15,000 (1.5 s) | every sweep: −100 pA for 0.3 s from 0.023 s; then a step of 0, 10, …, 290 pA (one per sweep) for 0.5 s from 0.823 s |
+| `patch_171116sh_0018_steps.npz` | `171116sh_0018.abf` | 17 × 30,000 (3 s) | a step of −100, −75, …, 300 pA (one per sweep) from 0.147 to 0.647 s; −100 pA in every sweep from 1.147 to 1.647 s; the sweep's step again from 1.647 to 2.147 s |
+
+| Key | Shape | Meaning |
+|---|---|---|
+| `v_cmV` | (n_sweeps, n_samples) | membrane potential in units of 0.01 mV (divide by 100 for mV) |
+| `i_pA` | (n_sweeps, n_samples) | injected current command, pA |
+| `fs_hz` | scalar | sampling rate, 10,000 Hz |
+
+`make_patch_subsets.py` rebuilds these files from the pyABF sample files.
+
+**Credit.** S. W. Harden, pyABF (https://swharden.com/pyabf), sample data files `18711001.abf` and `171116sh_0018.abf`.
