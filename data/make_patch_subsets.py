@@ -4,7 +4,8 @@ Source: the pyABF repository (https://github.com/swharden/pyABF, MIT licence, co
 files data/abfs/18711001.abf and data/abfs/171116sh_0018.abf. Copy them next to this script and run
     pip install pyabf
     python make_patch_subsets.py
-Writes patch_18711001_steps.npz and patch_171116sh_0018_steps.npz (each under 1.5 MB).
+Writes patch_18711001_steps.npz and patch_171116sh_0018_steps.npz (each under 1.5 MB), and two files of action potentials
+at the full 20 kHz, patch_18711001_ap20k.npz and patch_171116sh_0018_ap20k.npz (the depolarising steps only).
 
 Both are whole-cell current-clamp recordings sampled at 20 kHz; we keep every second sample (10 kHz).
 Voltage is stored as int16 in units of 0.01 mV and the injected current as int16 in pA, to keep files small.
@@ -31,3 +32,23 @@ for src, dst in FILES.items():
         source=np.str_(f"pyABF sample file {src} (github.com/swharden/pyABF, MIT licence)"),
     )
     print(dst, V.shape, f"{abf.dataRate / KEEP:.0f} Hz")
+
+# Action potentials at the full sampling rate (20 kHz), depolarising steps only, for derivative-based analyses.
+AP = {"18711001.abf": ("patch_18711001_ap20k.npz", 0.80, 1.35), "171116sh_0018.abf": ("patch_171116sh_0018_ap20k.npz", 0.12, 0.67)}
+for src, (dst, t0, t1) in AP.items():
+    abf = pyabf.ABF(src)
+    i0, i1 = int(round(t0 * abf.dataRate)), int(round(t1 * abf.dataRate))
+    V, I = [], []
+    for s in range(abf.sweepCount):
+        abf.setSweep(s)
+        if abf.sweepC[(i0 + i1) // 2] > 0:                  # keep sweeps whose step is depolarising
+            V.append(abf.sweepY[i0:i1]); I.append(abf.sweepC[(i0 + i1) // 2])
+    V = np.array(V)
+    np.savez_compressed(
+        dst,
+        v_cmV=np.round(V * 100).astype(np.int16),            # (n_sweeps, n_samples) membrane potential, units of 0.01 mV
+        step_pA=np.array(I, dtype=np.float64),               # (n_sweeps,) injected current during the step, pA
+        fs_hz=np.float64(abf.dataRate), t0_s=np.float64(t0),  # sampling rate; time of the first sample from sweep start
+        source=np.str_(f"pyABF sample file {src} (github.com/swharden/pyABF, MIT licence)"),
+    )
+    print(dst, V.shape, f"{abf.dataRate:.0f} Hz")
