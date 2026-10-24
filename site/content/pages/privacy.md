@@ -32,7 +32,7 @@ Opening a notebook in Google Colab takes you to Google's service, which has its 
 
 ## Removing your data
 
-To have your account and all its records deleted, contact the course creator, Peter Adepoju, through the [course repository](https://github.com/peter-adepoju/math-neuro-ml). Deleting an account removes your profile, progress, self-check answers and marks.
+To have your account and all its records deleted, email the course creator, Peter Adepoju, at [petera@aims.ac.za](mailto:petera@aims.ac.za). Deleting an account removes your profile, progress, self-check answers and marks.
 
 ## Changes
 

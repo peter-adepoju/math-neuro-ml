@@ -100,8 +100,9 @@
       <div>
         <h3>{{ C.instructor.name }}</h3>
         <p class="inst-role">{{ C.instructor.role }}</p>
-        <p>{{ C.instructor.bio }}</p>
-        <p>{% for t, u in C.instructor.links %}<a href="{{ u }}">{{ t }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+        {% for para in C.instructor.bio %}<p>{{ para }}</p>{% endfor %}
+        {% import "_icons.html" as ic %}
+        <ul class="inst-links">{% for l in C.instructor.links %}<li><a href="{{ l.url }}" {% if not l.url.startswith('mailto:') %}target="_blank" rel="noopener" {% endif %}aria-label="{{ l.label }}" title="{{ l.label }}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="{{ ic.ICONS[l.icon] }}"/></svg></a></li>{% endfor %}</ul>
       </div>
     </div>
   </section>

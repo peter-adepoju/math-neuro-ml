@@ -113,6 +113,10 @@ span.syl-title { color: var(--muted); }
 .instructor { display: flex; gap: 1.6rem; align-items: flex-start; max-width: 860px; }
 .instructor h3 { margin: 0; }
 .inst-role { color: var(--muted); margin: 0 0 0.6rem; }
+.inst-links { list-style: none; display: flex; flex-wrap: wrap; gap: 0.6rem; padding: 0; margin: 1.1rem 0 0; }
+.inst-links a { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); color: var(--ink); background: #fff; transition: background .15s, color .15s, border-color .15s; }
+.inst-links a:hover, .inst-links a:focus-visible { background: var(--blue-deep); border-color: var(--blue-deep); color: #fff; }
+.inst-links svg { fill: currentColor; }
 .inst-photo { width: 112px; height: 112px; border-radius: 50%; object-fit: cover; flex: none; }
 .inst-initials { display: grid; place-items: center; background: var(--blue-tint); color: var(--blue-deep); font-weight: 700; font-size: 2rem; }
 .faq { border-bottom: 1px solid var(--line); max-width: 860px; }

@@ -22,14 +22,27 @@ instructor:
   name: "Peter Adepoju"
   role: "Course creator and instructor"
   photo: ""            # put an image in site/static/img/ and write its file name here, e.g. "peter.jpg"
-  bio: >-
-    Peter Adepoju is a computational neuroscience researcher affiliated with AIMS South Africa and the University of
-    Oxford. His research sits at the meeting point of NeuroAI, neuroimaging and Bayesian machine learning, including
-    simulation-based inference for neuron models, decoded fMRI neurofeedback and functional connectivity. He holds an
-    M.Sc. in Applied Mathematics from the University of Cape Town. He designed and wrote this course, its notebooks,
-    notes and interactive figures.
+  # Each item in 'bio' is one paragraph.
+  bio:
+    - >-
+      Peter Adepoju is an applied mathematician and NeuroAI researcher who wants to understand how memory supports
+      learning and decision-making. He builds interpretable mathematical and computational models of neural mechanisms,
+      and uses what biological intelligence reveals to help design artificial intelligence that is more robust and adaptive.
+    - >-
+      He holds an M.Sc. in Applied Mathematics from the University of Cape Town and is an alumnus of the Simons
+      Computational Neuroscience Imbizo. He designed and wrote this course, including its notebooks, notes and
+      interactive figures.
+    - >-
+      Beyond research, Peter is passionate about teaching applied mathematics and enjoys discussing AI, emerging
+      technologies and their impact on the world.
+  # icon: linkedin, github, scholar, x, medium or email
   links:
-    - ["GitHub", "https://github.com/peter-adepoju"]
+    - {icon: linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/peter-adepoju"}
+    - {icon: github, label: "GitHub", url: "https://github.com/peter-adepoju"}
+    - {icon: scholar, label: "Google Scholar", url: "https://scholar.google.com/citations?user=-QpcxLAAAAAJ&hl=en"}
+    - {icon: x, label: "X (Twitter)", url: "https://x.com/peter_depoju"}
+    - {icon: medium, label: "Medium", url: "https://medium.com/@petera_9793"}
+    - {icon: email, label: "Email", url: "mailto:petera@aims.ac.za"}
 
 outcomes:
   - "Describe stimuli, neural responses, model parameters and datasets as vectors and matrices, with explicit shapes and units."
