@@ -95,7 +95,7 @@ lessons:
   - {n: 6, part: linear-algebra, title: "Eigenstructure and Stability", file: lesson06.md, minutes: 100, topics: ["Eigenvalues and eigenvectors", "Stability", "Modes and timescales"]}
   - {n: 7, part: linear-algebra, title: "Covariance and PCA", file: lesson07.md, minutes: 100, topics: ["Covariance", "Principal components", "Explained variance", "Leakage"]}
   - {n: 8, part: calculus, title: "Functions, Limits and Continuity", file: lesson08.md, minutes: 90, topics: ["Function families", "Limits", "Continuity", "Sampling pitfalls"]}
-  - {n: 9, part: calculus, title: "Derivatives and Sensitivity", minutes: 90, topics: ["The derivative", "Linear approximation", "Finite differences", "Noisy data"]}
+  - {n: 9, part: calculus, title: "Derivatives and Sensitivity", file: lesson09.md, minutes: 90, topics: ["The derivative", "Linear approximation", "Finite differences", "Noisy data"]}
   - {n: 10, part: calculus, title: "Chain Rule and Backpropagation", minutes: 100, topics: ["Chain rule", "Computation graphs", "Gradient checking", "Vanishing gradients"]}
   - {n: 11, part: calculus, title: "Critical Points and Curvature", minutes: 90, topics: ["Critical points", "Second derivative", "Convexity", "Flat and sharp directions"]}
   - {n: 12, part: calculus, title: "Gradient Descent in One Dimension", minutes: 90, topics: ["Update rule", "Learning rate", "Stochastic gradients"]}
