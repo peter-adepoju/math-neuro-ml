@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Lesson {{ L.n }}: {{ L.title }} | MAMBA{% endblock %}
+{% block description %}{{ fm.summary or L.title }}{% endblock %}
+{% block bodyclass %}lesson-page{% endblock %}
+{% block head %}<script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+<script defer src="{{ root }}static/js/ix/lib.js"></script>
+{% if ix_script %}<script defer src="{{ root }}{{ ix_script }}"></script>{% endif %}{% endblock %}
+{% block menubutton %}<button class="menu-btn" aria-controls="outline" aria-expanded="false"><span class="sr">Course outline</span><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" fill="none"/></svg></button>{% endblock %}
+{% block body %}
+<div class="layout" style="--part: {{ part.colour }}">
+  <nav class="outline" id="outline" aria-label="Course outline">
+    <div class="outline-head">
+      <a href="{{ root }}index.html">{{ C.short_title }}</a>
+      <div class="progress" aria-live="polite"><div class="progress-bar"><span id="progress-fill"></span></div><span id="progress-text">0 of {{ lessons|length }} lessons complete</span></div>
+    </div>
+    {% for p in parts %}
+    <details class="outline-part" style="--part: {{ p.colour }}" {% if p.id == L.part %}open{% endif %}>
+      <summary><span class="part-dot"></span>Part {{ p.roman }}: {{ p.title }}</summary>
+      <ol>
+      {% for x in p.lessons %}
+        <li class="{% if x.n == L.n %}current{% endif %}{% if not x.ready %} soon{% endif %}" data-slug="{{ x.slug }}">
+          {% if x.ready %}<a href="{{ root }}{{ x.url }}" {% if x.n == L.n %}aria-current="page"{% endif %}>{% else %}<span>{% endif %}
+          <span class="tick" aria-hidden="true"></span><span class="ol-n">{{ x.n }}</span> {{ x.title }}{% if not x.ready %} <em>coming soon</em>{% endif %}
+          {% if x.ready %}</a>{% else %}</span>{% endif %}
+        </li>
+      {% endfor %}
+      </ol>
+    </details>
+    {% endfor %}
+    <p class="outline-links"><a href="{{ root }}project.html">Course project</a><a href="{{ root }}resources.html">Resources</a></p>
+  </nav>
+  <main id="content" class="lesson" data-slug="{{ L.slug }}">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="{{ root }}index.html">Course</a> <span aria-hidden="true">/</span> <a href="{{ root }}index.html#part-{{ part.id }}">Part {{ part.roman }}: {{ part.title }}</a> <span aria-hidden="true">/</span> <span>Lesson {{ L.n }}</span></nav>
+    <header class="lesson-head">
+      <p class="lesson-kicker"><span class="part-chip">Part {{ part.roman }}: {{ part.title }}</span> Lesson {{ L.n }}</p>
+      <h1>{{ L.title }}</h1>
+      {% if fm.summary %}<p class="lesson-summary">{{ fm.summary }}</p>{% endif %}
+      <ul class="lesson-meta">
+        <li>About {{ L.minutes }} minutes</li>
+        {% if n_ix %}<li>{{ n_ix }} interactive figures</li>{% endif %}
+        {% if n_quiz %}<li>{{ n_quiz }} self-check questions</li>{% endif %}
+        {% if n_ex %}<li>{{ n_ex }} exercises</li>{% endif %}
+      </ul>
+      {% if L.nb_dir %}<div class="lesson-actions">
+        <a class="btn btn-primary" href="{{ colab }}/{{ L.nb_dir }}/Lesson{{ L.n }}_Teaching_Notebook.ipynb">Open the teaching notebook in Colab</a>
+        <a class="btn" href="{{ colab }}/{{ L.nb_dir }}/Lesson{{ L.n }}_Exercises_Notebook.ipynb">Open the exercises in Colab</a>
+      </div>{% endif %}
+    </header>
+    <article class="prose">
+      {{ content }}
+    </article>
+    <section class="complete-box">
+      <div>
+        <p class="complete-title">Finished this lesson?</p>
+        <p>Mark it complete to tick it off in the course outline. Your progress is saved in this browser.</p>
+      </div>
+      <button class="btn btn-primary" id="mark-complete" data-slug="{{ L.slug }}">Mark as complete</button>
+    </section>
+    <nav class="pager" aria-label="Lessons">
+      {% if prev %}<a class="pager-prev" href="{{ root }}{{ prev.url }}"><span>Previous</span>Lesson {{ prev.n }}: {{ prev.title }}</a>{% else %}<span></span>{% endif %}
+      {% if next %}<a class="pager-next" href="{{ root }}{{ next.url }}"><span>Next</span>Lesson {{ next.n }}: {{ next.title }}</a>{% endif %}
+    </nav>
+    <p class="edit-link"><a href="{{ edit_url }}">Edit this page on GitHub</a></p>
+  </main>
+  <aside class="toc" aria-label="On this page">
+    <p class="toc-title">On this page</p>
+    <ol>
+    {% for a, lvl, t in toc %}<li class="lvl{{ lvl }}"><a href="#{{ a }}">{{ t }}</a></li>{% endfor %}
+    </ol>
+  </aside>
+</div>
+{% endblock %}

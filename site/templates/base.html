@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ C.title }}{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ C.tagline }}{% endblock %}">
+<meta name="author" content="{{ C.instructor.name }}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="{{ root }}static/css/site.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>window.MAMBA = {root: "{{ root }}", lessons: {{ lessons | map(attribute='slug') | list | tojson }}, ready: {{ lessons | selectattr('ready') | map(attribute='slug') | list | tojson }} };</script>
+<script defer src="{{ root }}static/js/site.js"></script>
+{% block head %}{% endblock %}
+</head>
+<body class="{% block bodyclass %}{% endblock %}">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <div class="topbar-in">
+    {% block menubutton %}{% endblock %}
+    <a class="brand" href="{{ root }}index.html"><span class="brand-mark" aria-hidden="true">M</span><span class="brand-name">MAMBA</span><span class="brand-sub">Mathematical Sciences for Brain Data</span></a>
+    <nav class="topnav" aria-label="Main">
+      <a href="{{ root }}index.html#syllabus">Lessons</a>
+      <a href="{{ root }}project.html">Project</a>
+      <a href="{{ root }}resources.html">Resources</a>
+    </nav>
+    <div class="search" role="search">
+      <label class="sr" for="q">Search the course</label>
+      <input id="q" type="search" placeholder="Search the course" autocomplete="off">
+      <div class="search-results" id="search-results" hidden></div>
+    </div>
+  </div>
+</header>
+{% block body %}{% endblock %}
+<footer class="footer">
+  <div class="footer-in">
+    <p><strong>{{ C.title }}</strong>. Created by {{ C.instructor.name }}.</p>
+    <p>Data: Steinmetz et al. (2019), released under CC0; pyABF sample recordings (MIT licence). Some ideas are adapted from Neuromatch Academy (CC-BY).</p>
+    <p><a href="{{ root }}index.html#syllabus">Lessons</a> · <a href="{{ root }}project.html">Project</a> · <a href="{{ root }}resources.html">Resources</a> · <a href="https://github.com/{{ C.repo }}">Course repository on GitHub</a></p>
+  </div>
+</footer>
+</body>
+</html>

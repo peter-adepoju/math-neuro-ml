@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block bodyclass %}home{% endblock %}
+{% block body %}
+<section class="hero">
+  <div class="hero-in">
+    <div class="hero-main">
+      <p class="hero-kicker">Online course</p>
+      <h1>{{ C.title }}</h1>
+      <p class="hero-tag">{{ C.tagline }}</p>
+      <p class="hero-by"><span class="avatar" aria-hidden="true">PA</span>Created by <a href="#instructor">{{ C.instructor.name }}</a></p>
+      <div class="hero-actions">
+        <a class="btn btn-light" id="start-btn" href="{{ root }}lessons/lesson01.html">Start Lesson 1</a>
+        <a class="btn btn-ghost" href="#syllabus">View the syllabus</a>
+      </div>
+    </div>
+    <ul class="hero-stats" aria-label="Course at a glance">
+      <li><strong>{{ parts|length }}</strong> parts</li>
+      <li><strong>{{ lessons|length }}</strong> lessons</li>
+      <li><strong>{{ (total_minutes / 60) | round | int }}</strong> hours of reading and practice</li>
+      <li><strong>Colab</strong> notebooks that run in your browser, nothing to install</li>
+    </ul>
+  </div>
+</section>
+<nav class="subnav" aria-label="Course page sections">
+  <div class="subnav-in"><a href="#about">About</a><a href="#outcomes">Outcomes</a><a href="#syllabus">Syllabus</a><a href="#instructor">Instructor</a><a href="#faq">FAQ</a></div>
+</nav>
+<main id="content" class="home-main">
+  <section id="about" class="home-sec about-grid">
+    <div>
+      <h2>About this course</h2>
+      <p>{{ C.description }}</p>
+      <h3>Skills you will gain</h3>
+      <ul class="chips">{% for s in C.skills %}<li>{{ s }}</li>{% endfor %}</ul>
+      <h3>Before you start</h3>
+      <ul class="plain-list">{% for p in C.prerequisites %}<li>{{ p }}</li>{% endfor %}</ul>
+    </div>
+    <aside class="includes">
+      <h3>Every lesson includes</h3>
+      <ul>
+        <li>An illustrated reading with interactive figures</li>
+        <li>Self-check questions with instant feedback</li>
+        <li>Pen-and-paper exercises with answers</li>
+        <li>A teaching notebook that runs every example</li>
+        <li>An exercise notebook with graded tasks</li>
+        <li>A mini-lab on real neural recordings</li>
+      </ul>
+      <div class="progress home-progress"><div class="progress-bar"><span id="progress-fill"></span></div><span id="progress-text">0 of {{ lessons|length }} lessons complete</span></div>
+    </aside>
+  </section>
+
+  <section id="outcomes" class="home-sec">
+    <div class="outcomes-box">
+      <h2>What you will learn</h2>
+      <ul class="checks">{% for o in C.outcomes %}<li>{{ o }}</li>{% endfor %}</ul>
+    </div>
+  </section>
+
+  <section id="syllabus" class="home-sec">
+    <h2>Syllabus</h2>
+    <p class="sec-intro">The course has {{ parts|length }} parts. Work through them in order: each lesson builds on the ones before it.</p>
+    {% for p in parts %}
+    <article class="part-card" id="part-{{ p.id }}" style="--part: {{ p.colour }}">
+      <div class="part-head">
+        <p class="part-num">Part {{ p.roman }}</p>
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.summary }}</p>
+        <p class="part-meta">{{ p.lessons|length }} lessons, about {{ '%g' % (((p.lessons | sum(attribute='minutes')) / 60) | round(1)) }} hours</p>
+      </div>
+      <details class="part-lessons" {% if loop.first %}open{% endif %}>
+        <summary>Show the {{ p.lessons|length }} lessons</summary>
+        <ol>
+        {% for l in p.lessons %}
+          <li class="syl-row" data-slug="{{ l.slug }}">
+            <span class="tick" aria-hidden="true"></span>
+            <div class="syl-body">
+              {% if l.ready %}<a class="syl-title" href="{{ root }}{{ l.url }}">Lesson {{ l.n }}: {{ l.title }}</a>{% else %}<span class="syl-title">Lesson {{ l.n }}: {{ l.title }}</span>{% endif %}
+              <p class="syl-topics">{{ l.topics | join(', ') }}</p>
+            </div>
+            <span class="syl-time">{% if l.ready %}{{ l.minutes }} min{% else %}<em>Coming soon</em>{% endif %}</span>
+          </li>
+        {% endfor %}
+        </ol>
+      </details>
+    </article>
+    {% endfor %}
+    <article class="part-card project-card" style="--part: #4d5560">
+      <div class="part-head">
+        <p class="part-num">Capstone</p>
+        <h3>Project</h3>
+        <p>Choose a question about real or simulated neural data, answer it with the mathematics of the course, and present it. Eight options come with starter notebooks.</p>
+        <p class="part-meta"><a href="{{ root }}project.html">See the project options</a></p>
+      </div>
+    </article>
+  </section>
+
+  <section id="instructor" class="home-sec">
+    <h2>Instructor</h2>
+    <div class="instructor">
+      {% if C.instructor.photo %}<img src="{{ root }}static/img/{{ C.instructor.photo }}" alt="{{ C.instructor.name }}" class="inst-photo">{% else %}<span class="inst-photo inst-initials" aria-hidden="true">PA</span>{% endif %}
+      <div>
+        <h3>{{ C.instructor.name }}</h3>
+        <p class="inst-role">{{ C.instructor.role }}</p>
+        <p>{{ C.instructor.bio }}</p>
+        <p>{% for t, u in C.instructor.links %}<a href="{{ u }}">{{ t }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="home-sec">
+    <h2>Frequently asked questions</h2>
+    {% for q, a in C.faq %}<details class="faq"><summary>{{ q }}</summary><p>{{ a }}</p></details>{% endfor %}
+  </section>
+</main>
+{% endblock %}

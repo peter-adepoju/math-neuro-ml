@@ -1,0 +1,92 @@
+# Course-level content for the MAMBA website. Edit freely: the site is rebuilt from this file and from content/.
+title: "MAMBA: Mathematical Sciences for Brain Data"
+short_title: "MAMBA"
+tagline: "The mathematics behind neural data and machine learning, learned in Python on real recordings."
+description: >-
+  A course in the mathematics that computational neuroscience and machine learning are built on: linear algebra,
+  calculus, probability and differential equations. Every idea is introduced through a neuroscience question, worked
+  through in Python, and tested on real recordings from mouse brains and single neurons. No previous course in
+  any of these subjects is assumed.
+repo: "peter-adepoju/math-neuro-ml"
+branch: "main"
+site_url: "https://peter-adepoju.github.io/math-neuro-ml/"
+
+instructor:
+  name: "Peter Adepoju"
+  role: "Course creator and instructor"
+  photo: ""            # put an image in site/static/img/ and write its file name here, e.g. "peter.jpg"
+  bio: >-
+    Peter Adepoju is a computational neuroscience researcher affiliated with AIMS South Africa and the University of
+    Oxford. His research sits at the meeting point of NeuroAI, neuroimaging and Bayesian machine learning, including
+    simulation-based inference for neuron models, decoded fMRI neurofeedback and functional connectivity. He holds an
+    M.Sc. in Applied Mathematics from the University of Cape Town. He designed and wrote this course, its notebooks,
+    notes and interactive figures.
+  links:
+    - ["GitHub", "https://github.com/peter-adepoju"]
+
+outcomes:
+  - "Describe stimuli, neural responses, model parameters and datasets as vectors and matrices, with explicit shapes and units."
+  - "Use dot products, least squares, eigenvalues, covariance and PCA to analyse neural representations and fit linear models."
+  - "Use derivatives, gradients, curvature and integrals to study sensitivity, accumulation, optimisation and learning."
+  - "Describe neural variability and uncertainty with probability distributions, Bayes' rule and the bootstrap."
+  - "Simulate and interpret differential-equation models of membranes, spiking neurons and populations."
+  - "Carry an idea from one field to another: the same mathematics in a neuron, a dataset and a neural network."
+
+skills: ["Linear algebra", "PCA", "Least squares", "Calculus", "Gradient descent", "Probability", "Bayesian inference",
+         "Bootstrap", "Differential equations", "Neuron models", "Python", "NumPy", "Neural data analysis"]
+
+prerequisites:
+  - "Comfortable with arithmetic, elementary algebra, graphs and scientific notation."
+  - "Python at an intermediate level: variables, functions, loops, lists and a first look at NumPy."
+  - "No previous course in linear algebra, calculus, probability or differential equations."
+
+faq:
+  - ["Do I need to install anything?", "No. Every notebook opens in Google Colab, which runs Python in your browser. You need a Google account and an internet connection."]
+  - ["How is each lesson organised?", "Each lesson has an illustrated reading with interactive figures, short self-check questions, pen-and-paper exercises with answers, a teaching notebook that runs every example, and an exercise notebook with graded tasks."]
+  - ["Where does the data come from?", "From openly licensed recordings: Neuropixels recordings of mice doing a visual decision task (Steinmetz et al., 2019, released into the public domain) and whole-cell recordings of single neurons distributed with pyABF (MIT licence)."]
+  - ["Is my progress saved?", "Lessons you mark as complete are remembered in this browser on this device. Clearing your browser data resets them."]
+  - ["Can I use the materials in my own teaching?", "Please ask the course creator, Peter Adepoju, and credit the course and its data sources."]
+
+parts:
+  - id: linear-algebra
+    title: "Linear Algebra"
+    colour: "#0072B2"
+    summary: "Vectors and matrices as the language of population activity: similarity, transformation, fitting and the dominant patterns in a dataset."
+  - id: calculus
+    title: "Calculus"
+    colour: "#009E73"
+    summary: "How responses change: functions, derivatives, the chain rule behind backpropagation, integrals, and optimisation in one and many dimensions."
+  - id: probability
+    title: "Probability and Inference"
+    colour: "#CC79A7"
+    summary: "Variability and uncertainty: probability rules, random variables, the classic distributions, Bayesian inference and checking models against data."
+  - id: differential-equations
+    title: "Differential Equations"
+    colour: "#D55E00"
+    summary: "Dynamics: the membrane equation, spiking neurons and coupled excitatory and inhibitory populations."
+
+# Lessons. 'file' names the Markdown file in content/lessons/; lessons without one are listed as "coming soon".
+lessons:
+  - {n: 1, part: linear-algebra, title: "Vectors as Representations", file: lesson01.md, minutes: 90, topics: ["Scalars and vectors", "Norms and distances", "Unit vectors", "Basis and coordinates", "Population vectors"]}
+  - {n: 2, part: linear-algebra, title: "Dot Products and Projection", minutes: 90, topics: ["Dot product and angle", "Cosine similarity", "Projection", "Weighted sums"]}
+  - {n: 3, part: linear-algebra, title: "Matrices as Datasets", minutes: 90, topics: ["Rows, columns and transpose", "Special matrices", "Centring and scaling"]}
+  - {n: 4, part: linear-algebra, title: "Matrix Transformations", minutes: 90, topics: ["Matrix products", "Rank and inverses", "Affine maps", "Encoding and decoding"]}
+  - {n: 5, part: linear-algebra, title: "Linear Systems and Least Squares", minutes: 100, topics: ["Solving Ax = b", "Normal equations", "Pseudoinverse", "Train and test"]}
+  - {n: 6, part: linear-algebra, title: "Eigenstructure and Stability", minutes: 100, topics: ["Eigenvalues and eigenvectors", "Stability", "Modes and timescales"]}
+  - {n: 7, part: linear-algebra, title: "Covariance and PCA", minutes: 100, topics: ["Covariance", "Principal components", "Explained variance", "Leakage"]}
+  - {n: 8, part: calculus, title: "Functions, Limits and Continuity", minutes: 90, topics: ["Function families", "Limits", "Continuity", "Sampling pitfalls"]}
+  - {n: 9, part: calculus, title: "Derivatives and Sensitivity", minutes: 90, topics: ["The derivative", "Linear approximation", "Finite differences", "Noisy data"]}
+  - {n: 10, part: calculus, title: "Chain Rule and Backpropagation", minutes: 100, topics: ["Chain rule", "Computation graphs", "Gradient checking", "Vanishing gradients"]}
+  - {n: 11, part: calculus, title: "Critical Points and Curvature", minutes: 90, topics: ["Critical points", "Second derivative", "Convexity", "Flat and sharp directions"]}
+  - {n: 12, part: calculus, title: "Gradient Descent in One Dimension", minutes: 90, topics: ["Update rule", "Learning rate", "Stochastic gradients"]}
+  - {n: 13, part: calculus, title: "Integration and Accumulation", minutes: 90, topics: ["Riemann sums", "Fundamental theorem", "Numerical integration"]}
+  - {n: 14, part: calculus, title: "Multivariable Gradients", minutes: 100, topics: ["Partial derivatives", "Gradient and contours", "Hessian"]}
+  - {n: 15, part: calculus, title: "Multidimensional Optimisation", minutes: 100, topics: ["Conditioning", "Momentum", "Regularisation", "Validation"]}
+  - {n: 16, part: probability, title: "Probability Rules", minutes: 90, topics: ["Events and axioms", "Conditional probability", "Total probability", "Confusion matrices"]}
+  - {n: 17, part: probability, title: "Random Variables and Variability", minutes: 90, topics: ["Distributions", "Expectation and variance", "CV and Fano factor"]}
+  - {n: 18, part: probability, title: "Binomial, Poisson and Gaussian", minutes: 100, topics: ["Binomial", "Poisson", "Gaussian and CLT", "Likelihood"]}
+  - {n: 19, part: probability, title: "Bayesian Inference and Decisions", minutes: 100, topics: ["Bayes' rule", "Posterior updating", "Decisions and loss"]}
+  - {n: 20, part: probability, title: "Inference and Model Checking", minutes: 100, topics: ["Standard errors", "Bootstrap", "Correlation", "ROC curves"]}
+  - {n: 21, part: differential-equations, title: "ODEs and the Passive Membrane", minutes: 100, topics: ["First-order ODEs", "Time constants", "Membrane equation", "Euler's method"]}
+  - {n: 22, part: differential-equations, title: "Leaky Integrate-and-Fire Neurons", minutes: 100, topics: ["Threshold and reset", "f–I curve", "Noisy drive"]}
+  - {n: 23, part: differential-equations, title: "Coupled ODEs and Wilson–Cowan", minutes: 100, topics: ["Phase plane", "Fixed points and stability", "E–I oscillations"]}

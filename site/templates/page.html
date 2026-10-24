@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ fm.title }} | MAMBA{% endblock %}
+{% block body %}
+<main id="content" class="page">
+  <header class="page-head"><h1>{{ fm.title }}</h1>{% if fm.summary %}<p class="lesson-summary">{{ fm.summary }}</p>{% endif %}</header>
+  <article class="prose">{{ content }}</article>
+  <p class="edit-link"><a href="{{ edit_url }}">Edit this page on GitHub</a></p>
+</main>
+{% endblock %}
