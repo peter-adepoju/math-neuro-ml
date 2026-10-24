@@ -52,6 +52,11 @@
       return (markers[color] = `url(#${mid})`);
     }
     const back = el("g", {}, svg), layer = el("g", {}, svg), top = el("g", {}, svg);
+    if (o.clip) {   /* keep drawn lines inside the plot area */
+      const cp = el("clipPath", { id: id + "-clip" }, defs);
+      el("rect", { x: P - 2, y: P - 2, width: W - 2 * P + 4, height: H - 2 * P + 4 }, cp);
+      layer.setAttribute("clip-path", `url(#${id}-clip)`);
+    }
     function axes() {
       if (o.gridLines) {
         for (let x = Math.ceil(o.x[0] / o.grid) * o.grid; x <= o.x[1] + 1e-9; x += o.grid)
@@ -59,14 +64,14 @@
         for (let y = Math.ceil(o.y[0] / o.grid) * o.grid; y <= o.y[1] + 1e-9; y += o.grid)
           el("line", { y1: Y(y), y2: Y(y), x1: X(o.x[0]), x2: X(o.x[1]), stroke: C.grid, "stroke-width": 1 }, back);
       }
-      const x0 = Math.min(Math.max(0, o.x[0]), o.x[1]), y0 = Math.min(Math.max(0, o.y[0]), o.y[1]);
+      const x0 = o.frame ? o.x[0] : Math.min(Math.max(0, o.x[0]), o.x[1]), y0 = o.frame ? o.y[0] : Math.min(Math.max(0, o.y[0]), o.y[1]);   /* frame: axes along the bottom and left edges */
       el("line", { x1: X(o.x[0]), x2: X(o.x[1]), y1: Y(y0), y2: Y(y0), stroke: C.axis, "stroke-width": 1.3 }, back);
       el("line", { y1: Y(o.y[0]), y2: Y(o.y[1]), x1: X(x0), x2: X(x0), stroke: C.axis, "stroke-width": 1.3 }, back);
       const tick = o.tick || o.grid * (Math.abs(o.x[1] - o.x[0]) > 12 * o.grid ? 5 : 2);
       const xt = o.xtick || tick, yt = o.ytick || tick;
-      for (let x = Math.ceil(o.x[0] / xt - 1e-9) * xt; x <= o.x[1] + 1e-9; x += xt) if (Math.abs(x) > 1e-9)
+      for (let x = Math.ceil(o.x[0] / xt - 1e-9) * xt; x <= o.x[1] + 1e-9; x += xt) if (Math.abs(x) > 1e-9 || o.frame)
         text(fmt(x), x, y0, { dy: 18, anchor: "middle", size: 13, color: C.muted, layer: back });
-      for (let y = Math.ceil(o.y[0] / yt - 1e-9) * yt; y <= o.y[1] + 1e-9; y += yt) if (Math.abs(y) > 1e-9)
+      for (let y = Math.ceil(o.y[0] / yt - 1e-9) * yt; y <= o.y[1] + 1e-9; y += yt) if (Math.abs(y) > 1e-9 || o.frame)
         text(fmt(y), x0, y, { dx: -6, dy: 4, anchor: "end", size: 13, color: C.muted, layer: back });
       text(o.labels[0], o.x[1], y0, { dx: 0, dy: 34, anchor: "end", size: 14, color: C.muted, layer: back });
       text(o.labels[1], x0, o.y[1], { dx: 8, dy: 12, anchor: "start", size: 14, color: C.muted, layer: back });
@@ -176,13 +181,15 @@
       if (o.onStart) o.onStart();
       if (!o.bounce && +inp.value >= max) { inp.value = min; inp.dispatchEvent(new Event("input")); }
       b.textContent = "❚❚ Pause"; b.setAttribute("aria-pressed", "true");
-      timer = setInterval(() => {
+      const tick = () => {
         let v = +inp.value + dir * step;
         if (v > max || v < min) {
           if (o.bounce) { dir = -dir; v = +inp.value + dir * step; } else { stop(); return; }
         }
         inp.value = v; inp.dispatchEvent(new Event("input"));
-      }, o.interval || 120);
+      };
+      timer = setInterval(tick, o.interval || 120);
+      if ((o.interval || 120) > 400) tick();   /* slow players take their first step at once */
     });
     inp.addEventListener("pointerdown", () => timer && stop());
     return b;
