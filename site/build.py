@@ -206,9 +206,9 @@ def build():
         search.append({"t": f"Lesson {l['n']}: {l['title']}", "u": l["url"], "p": PARTS[l["part"]]["title"],
                        "h": [t for _, _, t in toc], "x": plain(content)[:20000]})
 
-    for name in ["account", "dashboard"]:
+    for name in ["account", "dashboard", "project"]:      # project: text comes from the database after sign-in
         open(os.path.join(OUT, f"{name}.html"), "w").write(env.get_template(f"{name}.html").render(**common, root=""))
-    for name in ["index", "project", "resources", "privacy"]:
+    for name in ["index", "resources", "privacy"]:
         extra = {}
         if name != "index":
             src = open(os.path.join(HERE, "content", "pages", f"{name}.md")).read()

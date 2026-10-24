@@ -33,10 +33,11 @@
       if (!user) { root.innerHTML = `<div class="empty-state"><p>Sign in with a tutor or instructor account to open the dashboard.</p><button class="btn btn-primary" type="button" data-signin>Sign in</button></div>`; return; }
       if (!me || (me.role !== "tutor" && me.role !== "instructor")) { root.innerHTML = `<p>This page is for tutors and the instructor. Your account is a learner account; <a href="${MAMBA.root}account.html">see your own progress</a>.</p>`; return; }
       root.innerHTML = `<p class="muted">Loading every learner's records…</p>`;
-      let P, PR, QA, MK;
+      let P, PR, QA, MK, PA, ST;
       try {
-        [P, PR, QA, MK] = await Promise.all([all("profiles", "id, full_name, email, role, created_at", "created_at"), all("progress", "user_id, lesson_slug, completed_at"),
-          all("quiz_answers", "user_id, question_id, lesson_slug, first_correct, last_correct, attempts, last_at"), all("marks", "id, learner_id, item, score, max_score, comment, entered_by, entered_at", "entered_at")]);
+        [P, PR, QA, MK, PA, ST] = await Promise.all([all("profiles", "id, full_name, email, role, created_at", "created_at"), all("progress", "user_id, lesson_slug, completed_at"),
+          all("quiz_answers", "user_id, question_id, lesson_slug, first_correct, last_correct, attempts, last_at"), all("marks", "id, learner_id, item, score, max_score, comment, entered_by, entered_at", "entered_at"),
+          all("project_access", "user_id, granted_at").catch(() => null), all("course_settings", "key, value").catch(() => null)]);
       } catch (e) { root.innerHTML = `<p class="ix-msg no">The records could not be loaded: ${esc(e.message)}.</p>`; return; }
       const byId = new Map(P.map(p => [p.id, p]));
       const name = id => { const p = byId.get(id); return p ? (p.full_name || p.email) : "unknown"; };
@@ -47,6 +48,9 @@
         const q = s.quiz[r.lesson_slug] = s.quiz[r.lesson_slug] || { right: 0, n: 0 }; q.n++; if (r.first_correct) q.right++; touch(s, r.last_at); });
       MK.forEach(m => { const s = stats.get(m.learner_id); if (s) s.marks.push(m); });
       const learners = P.filter(p => p.role === "learner");
+      const gateReady = PA !== null && ST !== null;                 // false until project_gate.sql has been run
+      const access = new Set((PA || []).map(r => r.user_id));
+      let projectOpen = ((ST || []).find(r => r.key === "project_open") || {}).value === true;
       const avg = f => learners.length ? learners.reduce((a, p) => a + f(stats.get(p.id)), 0) / learners.length : 0;
 
       root.innerHTML = `
@@ -56,9 +60,10 @@
           <div class="stat"><strong>${(100 * avg(s => s.answered ? s.right / s.answered : 0)).toFixed(0)}%</strong> self-check questions right first time</div>
           <div class="stat"><strong>${MK.length}</strong> marks recorded</div>
         </div>
+        <section class="dash-sec"><h2>Course project</h2><div id="proj-box"></div></section>
         <section class="dash-sec"><div class="dash-head"><h2>Learners</h2>
           <div class="dash-tools"><input type="search" id="flt" placeholder="Filter by name or email"><button class="btn btn-small" id="csv-learners" type="button">Download learners (CSV)</button><button class="btn btn-small" id="csv-answers" type="button">Download all answers (CSV)</button></div></div>
-          <div class="table-scroll"><table class="data-table" id="ltable"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Lessons completed</th><th>Self-check, first attempts</th><th>Marks</th><th>Last active</th></tr></thead><tbody></tbody></table></div>
+          <div class="table-scroll"><table class="data-table" id="ltable"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Lessons completed</th><th>Self-check, first attempts</th><th>Marks</th><th>Project</th><th>Last active</th></tr></thead><tbody></tbody></table></div>
           <div id="detail"></div></section>
         <section class="dash-sec"><h2>Enter a mark</h2>
           <form id="mark-form" class="mark-form">
@@ -82,8 +87,24 @@
             ? `<select data-role="${p.id}">${["learner", "tutor", "instructor"].map(r => `<option ${r === p.role ? "selected" : ""}>${r}</option>`).join("")}</select>` : esc(p.role);
           return `<tr data-id="${p.id}"><td><button class="link-btn" data-show="${p.id}">${esc(p.full_name || "(no name)")}</button></td><td>${esc(p.email)}</td><td>${role}</td>
             <td>${s.done.size} of ${META.length}</td><td>${s.right} of ${totalQ}${s.answered < totalQ ? ` <span class="muted">(${s.answered} answered)</span>` : ""}</td>
-            <td>${s.marks.length}</td><td class="muted">${new Date(s.last).toLocaleDateString()}</td></tr>`;
-        }).join("") || `<tr><td colspan="7" class="muted">No one matches that filter.</td></tr>`;
+            <td>${s.marks.length}</td><td>${projCell(p)}</td><td class="muted">${new Date(s.last).toLocaleDateString()}</td></tr>`;
+        }).join("") || `<tr><td colspan="8" class="muted">No one matches that filter.</td></tr>`;
+      }
+      function projCell(p) {
+        if (!gateReady) return `<span class="muted">–</span>`;
+        if (p.role !== "learner") return `<span class="muted">always</span>`;
+        if (projectOpen) return `<span class="pill ok">open to all</span>`;
+        return `<label class="proj-toggle"><input type="checkbox" data-proj="${p.id}" ${access.has(p.id) ? "checked" : ""}> ${access.has(p.id) ? "has access" : "no access"}</label>`;
+      }
+      function paintProject() {
+        const box = root.querySelector("#proj-box");
+        if (!gateReady) { box.innerHTML = `<p class="muted">Project release is not set up yet: run <code>site/supabase/project_gate.sql</code> in the Supabase SQL Editor.</p>`; return; }
+        const n = learners.filter(p => access.has(p.id)).length;
+        box.innerHTML = projectOpen
+          ? `<p><span class="pill ok">Open to all learners</span> Every signed-in learner can see the project page and its starter notebooks.</p>
+             <button class="btn btn-small" type="button" id="proj-toggle-all" data-open="false">Close the project again</button>`
+          : `<p><span class="pill">Closed</span> Learners see "opens later". ${n ? `${n} learner${n > 1 ? "s have" : " has"} been given access individually.` : "Give individual learners access with the Project column below, or open it to everyone."}</p>
+             <button class="btn btn-primary btn-small" type="button" id="proj-toggle-all" data-open="true">Release the project to all learners</button>`;
       }
       function showDetail(id) {
         const s = stats.get(id), p = byId.get(id);
@@ -99,7 +120,7 @@
           <td>${esc(m.comment || "")}</td><td class="muted">${esc(name(m.entered_by))}</td><td class="muted">${new Date(m.entered_at).toLocaleDateString()}</td>
           <td><button class="link-btn danger" data-del="${m.id}">Delete</button></td></tr>`).join("") || `<tr><td colspan="7" class="muted">No marks yet. Use the form above to enter the first one.</td></tr>`;
       }
-      paintLearners(); paintMarks();
+      paintProject(); paintLearners(); paintMarks();
       root.querySelector("#flt").addEventListener("input", paintLearners);
       root.addEventListener("click", async e => {
         const show = e.target.closest("[data-show]"); if (show) showDetail(show.dataset.show);
@@ -116,7 +137,28 @@
         btn.dataset.armed = "1"; btn.textContent = "Click again to delete"; setTimeout(() => { delete btn.dataset.armed; btn.textContent = "Delete"; }, 4000);
         return false;
       }
+      root.addEventListener("click", async e => {
+        const b = e.target.closest("#proj-toggle-all"); if (!b) return;
+        if (b.dataset.open === "true" && !b.dataset.armed) {           // two clicks, no pop-up
+          b.dataset.armed = "1"; b.textContent = "Click again to release to everyone"; setTimeout(() => { if (b.isConnected) paintProject(); }, 4000); return;
+        }
+        b.disabled = true;
+        const open = b.dataset.open === "true";
+        const { error } = await sb.from("course_settings").upsert({ key: "project_open", value: open, updated_by: me.id, updated_at: new Date().toISOString() });
+        if (error) { b.disabled = false; b.insertAdjacentHTML("afterend", `<span class="ix-msg no"> Not changed: ${esc(error.message)}</span>`); return; }
+        projectOpen = open; paintProject(); paintLearners();
+      });
       root.addEventListener("change", async e => {
+        const cb = e.target.closest("[data-proj]");
+        if (cb) {
+          cb.disabled = true;
+          const id = cb.dataset.proj;
+          const { error } = cb.checked ? await sb.from("project_access").insert({ user_id: id, granted_by: me.id })
+                                       : await sb.from("project_access").delete().eq("user_id", id);
+          if (error) { cb.checked = !cb.checked; cb.disabled = false; alertRow(cb, error.message); return; }
+          cb.checked ? access.add(id) : access.delete(id);
+          paintProject(); paintLearners(); return;
+        }
         const sel = e.target.closest("[data-role]"); if (!sel) return;
         const { error } = await sb.from("profiles").update({ role: sel.value }).eq("id", sel.dataset.role);
         if (error) { alertRow(sel, error.message); return; }

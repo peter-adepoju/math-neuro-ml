@@ -81,3 +81,11 @@ Accounts let learners sign up, keep their "Mark as complete" ticks and self-chec
    The *Instructor dashboard* appears in your account menu. From there you can make other people tutors, enter marks and export CSV files.
 
 Self-check scores count each learner's **first** answer to each question; later attempts are recorded but do not change the score.
+
+## The course project (released by tutors)
+
+The project text is **not** in this repository. It is stored in the Supabase table `protected_pages` (row `project`), and the site shows it only to tutors, the instructor, learners given access, or everyone once it is released. The starter notebooks are in a Google Drive folder ("MAMBA Project (restricted)", shared as *anyone with the link*); the links appear only on the released page.
+
+- **First set-up:** run `supabase/project_gate.sql` in the SQL Editor, then the private `project_content.sql` you were given.
+- **Releasing:** open the Instructor dashboard → *Course project*. Tick learners one by one in the *Project* column, or click *Release the project to all learners* (twice, to confirm). *Close the project again* hides it.
+- **Editing the text:** Supabase → Table Editor → `protected_pages` → row `project` → `body`. It is Markdown; `{{ colab: https://colab.research.google.com/drive/FILE_ID Open in Colab }}` makes a button.
