@@ -71,6 +71,10 @@ def render_md(text, ctx):
         stash.append(h)
         return f"\n\nSTASH{len(stash) - 1}STASH\n\n"
 
+    def keep_inline(h):                      # for shortcodes that may sit inside a table row or a sentence
+        stash.append(h)
+        return f"STASH{len(stash) - 1}STASH"
+
     def block(m):
         kind, arg, body = m.group(1), m.group(2).strip(), m.group(3)
         if kind in ("keypoint", "pitfall", "note", "definition", "example"):
@@ -111,7 +115,7 @@ def render_md(text, ctx):
             return keep(f'<figure class="ix-fig" id="interactive-{ctx.ix}"><div class="ix" data-ix="{html.escape(arg)}"><noscript>This interactive figure needs JavaScript.</noscript></div>{capt}</figure>')
         if kind == "colab":
             nb, _, label = arg.partition(" ")
-            return keep(f'<a class="btn btn-colab" href="{COLAB}/{nb}">{html.escape(label or "Open in Colab")}</a>')
+            return keep_inline(f'<a class="btn btn-colab" href="{COLAB}/{nb}">{html.escape(label or "Open in Colab")}</a>')
         return m.group(0)
 
     text = SHORT.sub(short, text)

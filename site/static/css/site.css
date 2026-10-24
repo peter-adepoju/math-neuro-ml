@@ -376,3 +376,5 @@ main.page.wide { max-width: 1240px; }
 .form-msg { grid-column: 1 / -1; font-size: 0.93rem; }
 .form-msg.bad { color: var(--bad); } .form-msg.ok { color: var(--ok); }
 @media (max-width: 760px) { .mark-form { grid-template-columns: 1fr 1fr; } .mark-form .wide { grid-column: 1 / -1; } }
+/* Colab buttons inside a table cell stay on one line */
+td .btn-colab { white-space: nowrap; padding: 0.35rem 0.7rem; font-size: 0.85rem; margin: 0; }

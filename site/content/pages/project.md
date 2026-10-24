@@ -34,7 +34,3 @@ The project brings the course together. In a team of two or three, you choose a 
 | Data | shapes, units and splits stated; held-out testing wherever something is fitted | test data used for fitting; units unclear |
 | Answer | stated with its uncertainty and the limits of the data | claims beyond what the figures show |
 | Figures | each makes one point, with labelled axes and units | cluttered or unlabelled |
-
-::: keypoint Before you present
-Say the answer in one sentence, with its uncertainty. Name the limit that matters most. If a model fails, say how and why: a clear failure is a result.
-:::
