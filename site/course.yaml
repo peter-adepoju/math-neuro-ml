@@ -100,7 +100,7 @@ lessons:
   - {n: 11, part: calculus, title: "Critical Points and Curvature", file: lesson11.md, minutes: 90, topics: ["Critical points", "Second derivative", "Convexity", "Flat and sharp directions"]}
   - {n: 12, part: calculus, title: "Gradient Descent in One Dimension", file: lesson12.md, minutes: 90, topics: ["Update rule", "Learning rate", "Stochastic gradients"]}
   - {n: 13, part: calculus, title: "Integration and Accumulation", file: lesson13.md, minutes: 90, topics: ["Riemann sums", "Fundamental theorem", "Numerical integration"]}
-  - {n: 14, part: calculus, title: "Multivariable Gradients", minutes: 100, topics: ["Partial derivatives", "Gradient and contours", "Hessian"]}
+  - {n: 14, part: calculus, title: "Multivariable Gradients", file: lesson14.md, minutes: 100, topics: ["Partial derivatives", "Gradient and contours", "Hessian"]}
   - {n: 15, part: calculus, title: "Multidimensional Optimisation", minutes: 100, topics: ["Conditioning", "Momentum", "Regularisation", "Validation"]}
   - {n: 16, part: probability, title: "Probability Rules", minutes: 90, topics: ["Events and axioms", "Conditional probability", "Total probability", "Confusion matrices"]}
   - {n: 17, part: probability, title: "Random Variables and Variability", minutes: 90, topics: ["Distributions", "Expectation and variance", "CV and Fano factor"]}

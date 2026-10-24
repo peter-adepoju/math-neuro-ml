@@ -231,7 +231,33 @@
       if (window.MAMBA_renderMath) window.MAMBA_renderMath(host);
     });
   }
+  /* Contour lines of f(x, y) on a Plane by marching squares. levels: array of values; style per level via s.color / s.colorFn(level, i). */
+  function contours(P, f, levels, s = {}) {
+    const [x0, x1] = P.opts.x, [y0, y1] = P.opts.y, n = s.n || 70, m = s.m || n;
+    const dx = (x1 - x0) / n, dy = (y1 - y0) / m, V = [];
+    for (let j = 0; j <= m; j++) { const row = []; for (let i = 0; i <= n; i++) row.push(f(x0 + i * dx, y0 + j * dy)); V.push(row); }
+    levels.forEach((L, li) => {
+      let d = "";
+      const ip = (a, b, va, vb) => a + (b - a) * (L - va) / ((vb - va) || 1e-12);
+      for (let j = 0; j < m; j++) for (let i = 0; i < n; i++) {
+        const xa = x0 + i * dx, xb = xa + dx, ya = y0 + j * dy, yb = ya + dy;
+        const v00 = V[j][i], v10 = V[j][i + 1], v01 = V[j + 1][i], v11 = V[j + 1][i + 1];
+        const pts = [];
+        if ((v00 < L) !== (v10 < L)) pts.push([ip(xa, xb, v00, v10), ya]);
+        if ((v10 < L) !== (v11 < L)) pts.push([xb, ip(ya, yb, v10, v11)]);
+        if ((v01 < L) !== (v11 < L)) pts.push([ip(xa, xb, v01, v11), yb]);
+        if ((v00 < L) !== (v01 < L)) pts.push([xa, ip(ya, yb, v00, v01)]);
+        for (let k = 0; k + 1 < pts.length; k += 2) d += `M${P.X(pts[k][0]).toFixed(1)} ${P.Y(pts[k][1]).toFixed(1)}L${P.X(pts[k + 1][0]).toFixed(1)} ${P.Y(pts[k + 1][1]).toFixed(1)}`;
+      }
+      if (d) el("path", { d, fill: "none", stroke: s.colorFn ? s.colorFn(L, li) : (s.color || C.blue), "stroke-width": s.width || 1.3, "stroke-dasharray": s.dashFn ? s.dashFn(L, li) : "", opacity: s.opacity || 1 }, s.layer || P.layer);
+    });
+  }
+  /* A heat map of f on a Plane: colourFn(v) -> css colour. */
+  function heat(P, f, colourFn, s = {}) {
+    const [x0, x1] = P.opts.x, [y0, y1] = P.opts.y, n = s.n || 50, m = s.m || n, dx = (x1 - x0) / n, dy = (y1 - y0) / m;
+    for (let j = 0; j < m; j++) for (let i = 0; i < n; i++) { const x = x0 + (i + 0.5) * dx, y = y0 + (j + 0.5) * dy; el("rect", { x: P.X(x0 + i * dx) - 0.3, y: P.Y(y0 + (j + 1) * dy) - 0.3, width: P.X(x0 + dx) - P.X(x0) + 0.6, height: P.Y(y0) - P.Y(y0 + dy) + 0.6, fill: colourFn(f(x, y)) }, s.layer || P.layer); }
+  }
   window.IX = { register: (n, f) => { registry[n] = f; if (document.readyState !== "loading") mountAll(); },
-                Plane, controls, slider, buttons, player, readout, layout, bars, el, h, fmt, tex, C, mountAll };
+                Plane, controls, slider, buttons, player, readout, layout, bars, el, h, fmt, tex, C, mountAll, contours, heat };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mountAll); else mountAll();
 })();
