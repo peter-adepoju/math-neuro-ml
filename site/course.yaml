@@ -11,6 +11,13 @@ repo: "peter-adepoju/math-neuro-ml"
 branch: "main"
 site_url: "https://peter-adepoju.github.io/math-neuro-ml/"
 
+# Learner accounts (Supabase). Paste the Project URL and the anon public key from Supabase:
+# Project Settings -> API. Both are safe to publish; the database rules in site/supabase/schema.sql protect the data.
+# While these are empty, the site works without accounts and progress is kept in each learner's browser.
+supabase:
+  url: ""
+  anon_key: ""
+
 instructor:
   name: "Peter Adepoju"
   role: "Course creator and instructor"
@@ -44,7 +51,7 @@ faq:
   - ["Do I need to install anything?", "No. Every notebook opens in Google Colab, which runs Python in your browser. You need a Google account and an internet connection."]
   - ["How is each lesson organised?", "Each lesson has an illustrated reading with interactive figures, short self-check questions, pen-and-paper exercises with answers, a teaching notebook that runs every example, and an exercise notebook with graded tasks."]
   - ["Where does the data come from?", "From openly licensed recordings: Neuropixels recordings of mice doing a visual decision task (Steinmetz et al., 2019, released into the public domain) and whole-cell recordings of single neurons distributed with pyABF (MIT licence)."]
-  - ["Is my progress saved?", "Lessons you mark as complete are remembered in this browser on this device. Clearing your browser data resets them."]
+  - ["Is my progress saved?", "Everything is open to read without an account. Sign in to save the lessons you complete and your self-check answers to your account, so they follow you to any device, and to see the marks your tutor records. Without an account, progress is kept in this browser only."]
   - ["Can I use the materials in my own teaching?", "Please ask the course creator, Peter Adepoju, and credit the course and its data sources."]
 
 parts:

@@ -63,9 +63,10 @@
       el("line", { x1: X(o.x[0]), x2: X(o.x[1]), y1: Y(y0), y2: Y(y0), stroke: C.axis, "stroke-width": 1.3 }, back);
       el("line", { y1: Y(o.y[0]), y2: Y(o.y[1]), x1: X(x0), x2: X(x0), stroke: C.axis, "stroke-width": 1.3 }, back);
       const tick = o.tick || o.grid * (Math.abs(o.x[1] - o.x[0]) > 12 * o.grid ? 5 : 2);
-      for (let x = Math.ceil(o.x[0] / tick) * tick; x <= o.x[1] + 1e-9; x += tick) if (Math.abs(x) > 1e-9)
+      const xt = o.xtick || tick, yt = o.ytick || tick;
+      for (let x = Math.ceil(o.x[0] / xt - 1e-9) * xt; x <= o.x[1] + 1e-9; x += xt) if (Math.abs(x) > 1e-9)
         text(fmt(x), x, y0, { dy: 18, anchor: "middle", size: 13, color: C.muted, layer: back });
-      for (let y = Math.ceil(o.y[0] / tick) * tick; y <= o.y[1] + 1e-9; y += tick) if (Math.abs(y) > 1e-9)
+      for (let y = Math.ceil(o.y[0] / yt - 1e-9) * yt; y <= o.y[1] + 1e-9; y += yt) if (Math.abs(y) > 1e-9)
         text(fmt(y), x0, y, { dx: -6, dy: 4, anchor: "end", size: 13, color: C.muted, layer: back });
       text(o.labels[0], o.x[1], y0, { dx: 0, dy: 34, anchor: "end", size: 14, color: C.muted, layer: back });
       text(o.labels[1], x0, o.y[1], { dx: 8, dy: 12, anchor: "start", size: 14, color: C.muted, layer: back });
@@ -152,8 +153,9 @@
   function buttons(host, items, onPick, opts = {}) {
     const g = h("div", { class: "ix-buttons", role: opts.toggle ? "radiogroup" : "group" }, host);
     if (opts.label) h("span", { class: "ix-slabel" }, g, opts.label);
+    const row = h("div", { class: "ix-btns" }, g);
     const bs = items.map((it, i) => {
-      const b = h("button", { type: "button", class: "ix-btn" }, g, it.label || it);
+      const b = h("button", { type: "button", class: "ix-btn" }, row, it.label || it);
       if (opts.toggle) b.setAttribute("aria-pressed", String(i === (opts.active || 0)));
       b.addEventListener("click", () => {
         if (opts.toggle) bs.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
@@ -171,6 +173,7 @@
     function stop() { clearInterval(timer); timer = null; b.textContent = "▶ Play"; b.setAttribute("aria-pressed", "false"); }
     b.addEventListener("click", () => {
       if (timer) return stop();
+      if (o.onStart) o.onStart();
       if (!o.bounce && +inp.value >= max) { inp.value = min; inp.dispatchEvent(new Event("input")); }
       b.textContent = "❚❚ Pause"; b.setAttribute("aria-pressed", "true");
       timer = setInterval(() => {

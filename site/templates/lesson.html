@@ -27,7 +27,6 @@
       </ol>
     </details>
     {% endfor %}
-    <p class="outline-links"><a href="{{ root }}project.html">Course project</a><a href="{{ root }}resources.html">Resources</a></p>
   </nav>
   <main id="content" class="lesson" data-slug="{{ L.slug }}">
     <nav class="crumbs" aria-label="Breadcrumb"><a href="{{ root }}index.html">Course</a> <span aria-hidden="true">/</span> <a href="{{ root }}index.html#part-{{ part.id }}">Part {{ part.roman }}: {{ part.title }}</a> <span aria-hidden="true">/</span> <span>Lesson {{ L.n }}</span></nav>
@@ -50,17 +49,20 @@
       {{ content }}
     </article>
     <section class="complete-box">
-      <div>
+      <div class="complete-text">
         <p class="complete-title">Finished this lesson?</p>
-        <p>Mark it complete to tick it off in the course outline. Your progress is saved in this browser.</p>
+        <p class="complete-note" data-auth-note>Mark it complete to tick it off in the course outline.{% if accounts %} <a href="#" data-signin>Sign in</a> to save your progress and self-check scores to your account.{% else %} Your progress is saved in this browser.{% endif %}</p>
+        <p class="quiz-score" data-quiz-score hidden></p>
       </div>
-      <button class="btn btn-primary" id="mark-complete" data-slug="{{ L.slug }}">Mark as complete</button>
+      <button class="btn btn-ghost-blue" id="mark-complete" data-slug="{{ L.slug }}">Mark as complete</button>
     </section>
     <nav class="pager" aria-label="Lessons">
-      {% if prev %}<a class="pager-prev" href="{{ root }}{{ prev.url }}"><span>Previous</span>Lesson {{ prev.n }}: {{ prev.title }}</a>{% else %}<span></span>{% endif %}
-      {% if next %}<a class="pager-next" href="{{ root }}{{ next.url }}"><span>Next</span>Lesson {{ next.n }}: {{ next.title }}</a>{% endif %}
+      {% if prev %}<a class="pager-prev" href="{{ root }}{{ prev.url }}"><span class="pager-dir">Previous lesson</span><span class="pager-title">{{ prev.n }}. {{ prev.title }}</span></a>{% else %}<span></span>{% endif %}
+      {% if nextl %}
+        {% if nextl.ready %}<a class="pager-next" href="{{ root }}{{ nextl.url }}"><span class="pager-dir">Next lesson</span><span class="pager-title">{{ nextl.n }}. {{ nextl.title }}</span></a>
+        {% else %}<span class="pager-next is-soon" aria-disabled="true"><span class="pager-dir">Next lesson, coming soon</span><span class="pager-title">{{ nextl.n }}. {{ nextl.title }}</span></span>{% endif %}
+      {% endif %}
     </nav>
-    <p class="edit-link"><a href="{{ edit_url }}">Edit this page on GitHub</a></p>
   </main>
   <aside class="toc" aria-label="On this page">
     <p class="toc-title">On this page</p>

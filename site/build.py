@@ -19,6 +19,9 @@ OUT = os.path.join(HERE, "_build")
 REPO_ROOT = os.path.dirname(HERE)
 
 C = yaml.safe_load(open(os.path.join(HERE, "course.yaml")))
+C["supabase"] = C.get("supabase") or {}
+if os.environ.get("MAMBA_SUPABASE_URL"):            # for local testing against another project
+    C["supabase"] = {"url": os.environ["MAMBA_SUPABASE_URL"], "anon_key": os.environ.get("MAMBA_SUPABASE_KEY", "")}
 PARTS = {p["id"]: p for p in C["parts"]}
 for i, p in enumerate(C["parts"]):
     p["number"] = i + 1
@@ -165,7 +168,14 @@ def build():
     shutil.copytree(os.path.join(HERE, "assets"), os.path.join(OUT, "assets"),
                     ignore=shutil.ignore_patterns("*.svg"))       # SVG figures are inlined in the pages
     env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")), autoescape=False)
-    common = dict(C=C, parts=C["parts"], lessons=C["lessons"], colab=COLAB, edit=EDIT, n_ready=sum(l["ready"] for l in C["lessons"]),
+    accounts = bool((C.get("supabase") or {}).get("url") and (C.get("supabase") or {}).get("anon_key"))
+    quiz_counts = {}
+    for l in C["lessons"]:
+        if l["ready"]:
+            quiz_counts[l["slug"]] = len(re.findall(r"^\?\s", open(os.path.join(HERE, "content", "lessons", l["file"])).read(), re.M))
+    lesson_meta = [{"slug": l["slug"], "n": l["n"], "title": l["title"], "part": PARTS[l["part"]]["title"], "url": l["url"],
+                    "ready": l["ready"], "quiz": quiz_counts.get(l["slug"], 0)} for l in C["lessons"]]
+    common = dict(accounts=accounts, quiz_counts=quiz_counts, lesson_meta=lesson_meta, C=C, parts=C["parts"], lessons=C["lessons"], colab=COLAB, edit=EDIT, n_ready=sum(l["ready"] for l in C["lessons"]),
                   total_minutes=sum(l["minutes"] for l in C["lessons"]))
     search = []
 
@@ -185,13 +195,15 @@ def build():
         nxt = next((x for x in lessons[i + 1:] if x["ready"]), None)
         page = env.get_template("lesson.html").render(
             **common, root="../", L=l, part=PARTS[l["part"]], fm=fm, content=content, toc=toc, prev=prev, next=nxt,
-            n_fig=ctx.fig, n_ix=ctx.ix, n_quiz=ctx.quiz, n_ex=ctx.ex,
+            nextl=lessons[i + 1] if i + 1 < len(lessons) else None, n_fig=ctx.fig, n_ix=ctx.ix, n_quiz=ctx.quiz, n_ex=ctx.ex,
             edit_url=f"{EDIT}/content/lessons/{l['file']}", ix_script=f"static/js/ix/{l['slug']}.js"
             if os.path.exists(os.path.join(HERE, "static", "js", "ix", f"{l['slug']}.js")) else None)
         open(os.path.join(OUT, l["url"]), "w").write(page)
         search.append({"t": f"Lesson {l['n']}: {l['title']}", "u": l["url"], "p": PARTS[l["part"]]["title"],
                        "h": [t for _, _, t in toc], "x": plain(content)[:20000]})
 
+    for name in ["account", "dashboard"]:
+        open(os.path.join(OUT, f"{name}.html"), "w").write(env.get_template(f"{name}.html").render(**common, root=""))
     for name in ["index", "project", "resources"]:
         extra = {}
         if name != "index":

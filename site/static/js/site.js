@@ -5,12 +5,17 @@
   const KEY = "mamba-progress-v1";
 
   // ---------- progress (stored in this browser only) ----------
+  // Signed out: progress lives in this browser. Signed in (auth.js): it comes from the learner's account.
+  let accountDone = null;
   function loadDone() {
+    if (accountDone) return new Set(accountDone);
     try { return new Set(JSON.parse(localStorage.getItem(KEY) || "[]")); } catch (e) { return new Set(); }
   }
   function saveDone(s) {
+    if (accountDone) { accountDone = [...s]; return; }
     try { localStorage.setItem(KEY, JSON.stringify([...s])); } catch (e) { /* storage unavailable */ }
   }
+  window.MAMBA_setDone = list => { accountDone = list ? list.slice() : null; paintProgress(); };
   function paintProgress() {
     const done = loadDone();
     document.querySelectorAll("[data-slug]").forEach(el => {
@@ -38,8 +43,10 @@
     const btn = document.getElementById("mark-complete");
     if (btn) btn.addEventListener("click", () => {
       const done = loadDone();
-      done.has(btn.dataset.slug) ? done.delete(btn.dataset.slug) : done.add(btn.dataset.slug);
+      const now = !done.has(btn.dataset.slug);
+      now ? done.add(btn.dataset.slug) : done.delete(btn.dataset.slug);
       saveDone(done); paintProgress();
+      if (window.MAMBA_backend) window.MAMBA_backend.saveProgress(btn.dataset.slug, now);
     });
     paintProgress();
   }
@@ -68,6 +75,8 @@
         if (!picked) return;
         q.querySelectorAll("label").forEach(l => l.classList.remove("right", "wrong"));
         const ok = picked.value === "1";
+        const slug = document.querySelector("main.lesson")?.dataset.slug;
+        if (window.MAMBA_backend && slug) window.MAMBA_backend.recordQuiz(q.dataset.qid, slug, ok);
         picked.closest("label").classList.add(ok ? "right" : "wrong");
         if (!ok) { const r = q.querySelector('input[value="1"]'); if (r) r.closest("label").classList.add("right"); }
         const v = fb.querySelector(".quiz-verdict");
@@ -79,15 +88,34 @@
   }
 
   // ---------- Plotly figures exported from the notebooks ----------
+  /* Notebook figures are laid out for a wide notebook. On the page: the caption replaces the title, the legend sits in
+     one row above the plot so it never squeezes it, and the Play/Pause buttons and time slider sit in one row below. */
+  function tidyLayout(L0) {
+    const L = JSON.parse(JSON.stringify(L0));
+    delete L.width; L.autosize = true;
+    L.title = { text: "" };
+    L.font = Object.assign({}, L.font, { size: 13 });
+    L.legend = { orientation: "h", x: 0, xanchor: "left", y: 1.0, yanchor: "bottom", font: { size: 12.5 }, itemwidth: 30, bgcolor: "rgba(255,255,255,0)" };
+    const anim = (L.updatemenus || []).length > 0;
+    L.margin = { l: 60, r: 20, t: 40, b: anim ? 110 : 50 };
+    if (anim) {
+      L.updatemenus = L.updatemenus.map(u => Object.assign(u, { type: "buttons", direction: "left", showactive: false, x: 0, xanchor: "left", y: 0, yanchor: "top", pad: { t: 62, r: 10 } }));
+      L.sliders = (L.sliders || []).map(s => Object.assign(s, { x: 0.2, len: 0.8, xanchor: "left", y: 0, yanchor: "top", pad: { t: 48, b: 0 },
+        currentvalue: Object.assign({}, s.currentvalue, { visible: true, xanchor: "right", font: { size: 12.5 }, offset: 8 }) }));
+    }
+    if (L.scene) { L.scene.domain = { x: [0, 1], y: [0, 1] }; L.scene.camera = Object.assign({}, L.scene.camera, { eye: { x: 1.7, y: 1.7, z: 1.05 } }); }
+    if (!L.height || L.height > 620) L.height = anim ? 640 : 560;
+    return L;
+  }
+
   function loadPlotly(holder) {
     if (holder.dataset.state) return;
     holder.dataset.state = "loading";
     const go = () => fetch(holder.dataset.src).then(r => r.json()).then(fig => {
       holder.innerHTML = ""; holder.classList.add("loaded");
       const div = document.createElement("div"); holder.appendChild(div);
-      const layout = Object.assign({}, fig.layout || {}, { autosize: true });
-      delete layout.width;
-      Plotly.newPlot(div, fig.data, layout, { responsive: true, displaylogo: false, scrollZoom: false });
+      const layout = tidyLayout(fig.layout || {});
+      Plotly.newPlot(div, fig.data, layout, { responsive: true, displaylogo: false, scrollZoom: false, displayModeBar: false });
       if (fig.frames && fig.frames.length) Plotly.addFrames(div, fig.frames);
     }).catch(() => { holder.textContent = "This figure could not be loaded."; });
     if (window.Plotly) go(); else window.addEventListener("load", go, { once: true });

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Instructor dashboard | MAMBA{% endblock %}
+{% block head %}<meta name="robots" content="noindex"><script>window.MAMBA_META = {{ lesson_meta | tojson }};</script>
+<script defer src="{{ root }}static/js/dashboard.js"></script>{% endblock %}
+{% block body %}
+<main id="content" class="page data-page wide">
+  <header class="page-head"><h1>Instructor dashboard</h1><p class="lesson-summary">Learners' progress, self-check scores and marks. Visible only to tutors and the instructor.</p></header>
+  <div id="dash-root"><p class="muted">Loading…</p></div>
+  {% if not accounts %}<p>Accounts are not switched on for this course yet.</p>{% endif %}
+</main>
+{% endblock %}

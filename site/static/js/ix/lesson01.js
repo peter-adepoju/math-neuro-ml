@@ -81,14 +81,15 @@
     const P = Plane(L, { x: [-6, 6], y: [-5, 5], title: "Vector arithmetic" });
     const side = h("div", {}, L);
     let mode = "add", u = [3, 1], v = [1, 3], c = 1.5;
-    buttons(side, [{ label: "u + v", m: "add" }, { label: "u − v", m: "sub" }, { label: "c u", m: "scale" }], it => { mode = it.m; draw(); }, { toggle: true, label: "Operation" });
+    const opBtns = buttons(side, [{ label: "u + v", m: "add" }, { label: "u − v", m: "sub" }, { label: "c u", m: "scale" }], it => { mode = it.m; draw(); }, { toggle: true, label: "Operation" });
     const cs = slider(side, { label: "c", min: -2, max: 2.5, step: 0.1, value: c, onInput: x => { c = x; draw(); } });
-    const cplay = player(side, cs, { bounce: true, interval: 90 });
+    const cplay = player(side, cs, { bounce: true, interval: 90,
+      onStart: () => { mode = "scale"; opBtns.forEach((b, i) => b.setAttribute("aria-pressed", String(i === 2))); draw(); } });
     const out = readout(side);
     h("p", { class: "ix-hint" }, side, "Drag the tips of u (blue) and v (orange).");
     function draw() {
       P.clear();
-      cs.input.disabled = mode !== "scale"; cplay.disabled = mode !== "scale";
+      cs.input.disabled = mode !== "scale";
       if (mode === "add") {
         const w = [u[0] + v[0], u[1] + v[1]];
         P.path([[0, 0], u, w, v], { close: true, fill: C.green, fillOpacity: 0.07, color: "none" });
@@ -155,7 +156,7 @@
     const L = layout(root, true);
     const P = Plane(L, { x: [-6, 6], y: [-5, 5], title: "Triangle inequality" });
     const side = h("div", {}, L);
-    const B = bars(side, { labels: ["‖u‖ + ‖v‖", "‖u + v‖"], colors: [C.orange, C.green], height: 180, format: x => fmt(x, 2) });
+    const B = bars(side, { labels: ["detour ‖u‖ + ‖v‖", "direct ‖u + v‖"], colors: [C.purple, C.green], height: 190, format: x => fmt(x, 2) });
     const out = readout(side);
     h("p", { class: "ix-hint" }, side, "Drag u and v. Try to make the direct route as long as the detour.");
     let u = [3, 1], v = [-1, 3];
@@ -168,7 +169,7 @@
       const a = norm(u) + norm(v), b = norm(w);
       B.update([a, b]);
       const eq = a - b < 0.02;
-      out.innerHTML = `<p>Detour ${fmt(norm(u))} + ${fmt(norm(v))} = <b>${fmt(a)}</b>; direct route <b>${fmt(b)}</b>.</p>
+      out.innerHTML = `<p><span class="k-purple">Detour</span> ‖<span class="k-blue">u</span>‖ + ‖<span class="k-orange">v</span>‖ = ${fmt(norm(u))} + ${fmt(norm(v))} = <b>${fmt(a)}</b>; <span class="k-green">direct route</span> ‖u + v‖ = <b>${fmt(b)}</b>.</p>
         <p class="ix-msg ${eq ? "ok" : ""}">${eq ? "Equal: u and v point the same way, so the detour is a straight line." : "The direct route is shorter. Equality needs u and v to point in the same direction."}</p>`;
     }
     P.handle(u, { color: C.blue, name: "tip of u", snap: 0.5, onMove: p => { u = p; hv.set([u[0] + v[0], u[1] + v[1]], true); v = [hv.p[0] - u[0], hv.p[1] - u[1]]; draw(); } });
@@ -220,9 +221,9 @@
     let unit = "ft", ageUnit = "years", std = false;
     const sd = { size: 400, beds: 0.8, age: 20 };        // illustrative spreads across a dataset (for standardising)
     const B = bars(left, { labels: ["size", "bedrooms", "age"], colors: [C.blue, C.orange, C.green], max: 100, title: "Share of the squared distance (%)", height: 240, width: 420, format: x => fmt(x, 1) + "%" });
-    buttons(side, [{ label: "square feet", v: "ft" }, { label: "square metres", v: "m" }], it => { unit = it.v; draw(); }, { toggle: true, label: "Size in" });
+    buttons(side, [{ label: "sq ft", v: "ft" }, { label: "m²", v: "m" }], it => { unit = it.v; draw(); }, { toggle: true, label: "Size in" });
     buttons(side, [{ label: "years", v: "years" }, { label: "decades", v: "decades" }], it => { ageUnit = it.v; draw(); }, { toggle: true, label: "Age in" });
-    buttons(side, [{ label: "raw units", v: false }, { label: "standardised", v: true }], it => { std = it.v; draw(); }, { toggle: true, label: "Features" });
+    buttons(side, [{ label: "raw", v: false }, { label: "standardised", v: true }], it => { std = it.v; draw(); }, { toggle: true, label: "Features" });
     const out = readout(side);
     function draw() {
       let a = unit === "ft" ? d.size : d.size * 0.092903, b = d.beds, c = ageUnit === "years" ? d.age : d.age / 10;
@@ -282,8 +283,8 @@
       const dep = Math.abs(det) < 1e-6;
       if (!dep) {   // the coordinate lattice of this basis
         for (let k = -8; k <= 8; k++) {
-          P.line([k * b1[0] - 12 * b2[0], k * b1[1] - 12 * b2[1]], [k * b1[0] + 12 * b2[0], k * b1[1] + 12 * b2[1]], { color: "#dbe8f2", width: 1 });
-          P.line([k * b2[0] - 12 * b1[0], k * b2[1] - 12 * b1[1]], [k * b2[0] + 12 * b1[0], k * b2[1] + 12 * b1[1]], { color: "#f5e3c5", width: 1 });
+          P.line([k * b1[0] - 12 * b2[0], k * b1[1] - 12 * b2[1]], [k * b1[0] + 12 * b2[0], k * b1[1] + 12 * b2[1]], { color: "#e3e8ec", width: 1 });
+          P.line([k * b2[0] - 12 * b1[0], k * b2[1] - 12 * b1[1]], [k * b2[0] + 12 * b1[0], k * b2[1] + 12 * b1[1]], { color: "#e3e8ec", width: 1 });
         }
       } else if (norm(b1) > 0) {
         P.line([-20 * b1[0], -20 * b1[1]], [20 * b1[0], 20 * b1[1]], { color: C.purple, width: 6, opacity: 0.25 });
@@ -349,5 +350,74 @@
         <p>By the triangle inequality the path is never shorter than the displacement. A ratio near 1 means the population moved fairly directly.</p>`;
     }
     draw();
+  });
+  /* Shared loader for the notebook's simulated three-neuron recording (60 bins of 50 ms). */
+  let recP = null;
+  const rec = () => recP || (recP = fetch((window.MAMBA ? MAMBA.root : "../") + "assets/lesson01/recording.json").then(r => r.json()));
+
+  /* 11. Time traces and the matching state-space point, moving together. */
+  IX.register("linked-traces", root => {
+    rec().then(D => {
+      const n = D.t.length, cols = [C.blue, C.orange, C.green], names = ["N1", "N2", "N3"];
+      const grid = h("div", { class: "ix-two" }, root);
+      const left = h("div", {}, grid), right = h("div", {}, grid);
+      h("p", { class: "ix-panel-title" }, left, "Firing-rate traces");
+      h("p", { class: "ix-panel-title" }, right, "The same moment as a point (N1, N2)");
+      const A = Plane(left, { x: [0, 3.2], y: [0, 56], xtick: 0.5, ytick: 10, labels: ["time (s)", "rate (spikes/s)"], width: 460, height: 340, title: "Firing-rate traces" });
+      const B = Plane(right, { x: [0, 56], y: [0, 22], xtick: 10, ytick: 5, labels: ["N1 (spikes/s)", "N2 (spikes/s)"], width: 460, height: 340, title: "N1 against N2" });
+      [0, 1, 2].forEach(i => {
+        A.path(D.t.map((t, k) => [t, D.N[i][k]]), { color: cols[i], width: 2, layer: A.back });
+        A.text(names[i], D.t[n - 1], D.N[i][n - 1], { dx: 6, dy: 4, color: cols[i], weight: 700, layer: A.back });
+      });
+      B.path(D.t.map((_, k) => [D.N[0][k], D.N[1][k]]), { color: "#d5dbe0", width: 1.6, layer: B.back });
+      B.dot(D.early, { r: 6, fill: "#fff", stroke: C.ink, sw: 2, layer: B.top }); B.text("early, 0.25 s", D.early[0], D.early[1], { dx: 0, dy: -12, anchor: "middle", size: 12.5, color: C.ink, halo: true, layer: B.top });
+      B.dot(D.late, { r: 6, fill: "#fff", stroke: C.ink, sw: 2, layer: B.top }); B.text("late, 2.25 s", D.late[0], D.late[1], { dx: -10, dy: 4, anchor: "end", size: 12.5, color: C.ink, halo: true, layer: B.top });
+      const ctl = h("div", { class: "ix-controls" }, root);
+      const out = readout(root);
+      let k = 0;
+      function draw() {
+        A.clear(); B.clear();
+        A.line([D.t[k], 0], [D.t[k], 56], { color: C.ink, dash: "5 4", width: 1.5 });
+        [0, 1, 2].forEach(i => A.dot([D.t[k], D.N[i][k]], { r: 4.5, color: cols[i] }));
+        B.path(D.t.slice(0, k + 1).map((_, j) => [D.N[0][j], D.N[1][j]]), { color: C.ink, width: 2.6 });
+        B.dot([D.N[0][k], D.N[1][k]], { r: 7.5, color: C.purple });
+        out.innerHTML = `<p>t = <b>${fmt(D.t[k], 2)} s</b>: state r(t) = (<span class="k-blue">${fmt(D.N[0][k], 1)}</span>, <span class="k-orange">${fmt(D.N[1][k], 1)}</span>, <span class="k-green">${fmt(D.N[2][k], 1)}</span>) spikes/s. The dashed line on the left and the purple point on the right are the same moment.</p>`;
+      }
+      const sl = slider(ctl, { label: "time", min: 0, max: n - 1, step: 1, value: 0, format: v => fmt(D.t[v], 2) + " s", onInput: v => { k = v; draw(); } });
+      player(ctl, sl, { interval: 110 });
+      draw();
+    });
+  });
+
+  /* 12. Two conditions as two trajectories, compared at matching times. */
+  IX.register("two-conditions", root => {
+    rec().then(D => {
+      const n = D.t.length, A = D.A, Bc = D.B;
+      const L = layout(root, true);
+      const P = Plane(L, { x: [0, 56], y: [0, 22], xtick: 10, ytick: 5, labels: ["N1 (spikes/s)", "N2 (spikes/s)"], width: 520, height: 360, title: "Two conditions in the plane of N1 and N2" });
+      const side = h("div", {}, L);
+      P.path(A[0].map((x, k) => [x, A[1][k]]), { color: "#cfe3f1", width: 1.5, layer: P.back });
+      P.path(Bc[0].map((x, k) => [x, Bc[1][k]]), { color: "#f6d3bd", width: 1.5, layer: P.back });
+      const out = readout(side);
+      let k = 0;
+      function draw() {
+        P.clear();
+        P.path(A[0].slice(0, k + 1).map((x, j) => [x, A[1][j]]), { color: C.blue, width: 2.6 });
+        P.path(Bc[0].slice(0, k + 1).map((x, j) => [x, Bc[1][j]]), { color: C.vermilion, width: 2.6 });
+        const a = [A[0][k], A[1][k]], b = [Bc[0][k], Bc[1][k]];
+        P.line(a, b, { color: C.ink, dash: "4 4", width: 1.5 });
+        P.dot(a, { r: 7, color: C.blue }); P.dot(b, { r: 7, color: C.vermilion });
+        const d = Math.hypot(a[0] - b[0], a[1] - b[1]);
+        out.innerHTML = `<table><tr><td>time</td><td><b>${fmt(D.t[k], 2)} s</b></td></tr>
+          <tr><td><span class="k-blue">condition A</span></td><td>(${fmt(a[0], 1)}, ${fmt(a[1], 1)}) spikes/s</td></tr>
+          <tr><td><span class="k-verm">condition B</span></td><td>(${fmt(b[0], 1)}, ${fmt(b[1], 1)}) spikes/s</td></tr>
+          <tr><td>distance between them</td><td><b>${fmt(d, 1)} spikes/s</b></td></tr></table>
+          <p>The two conditions start ${fmt(Math.hypot(A[0][0] - Bc[0][0], A[1][0] - Bc[1][0]), 1)} spikes/s apart and end ${fmt(Math.hypot(A[0][n - 1] - Bc[0][n - 1], A[1][n - 1] - Bc[1][n - 1]), 1)} spikes/s apart.</p>`;
+      }
+      const ctl = h("div", { class: "ix-controls" }, side);
+      const sl = slider(ctl, { label: "time", min: 0, max: n - 1, step: 1, value: 0, format: v => fmt(D.t[v], 2) + " s", onInput: v => { k = v; draw(); } });
+      player(ctl, sl, { interval: 110 });
+      draw();
+    });
   });
 })();

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}My progress | MAMBA{% endblock %}
+{% block head %}<script>window.MAMBA_LESSONS = {{ lessons | map(attribute='slug') | list | tojson }}; window.MAMBA_META = {{ lesson_meta | tojson }};</script>
+<script defer src="{{ root }}static/js/account.js"></script>{% endblock %}
+{% block body %}
+<main id="content" class="page data-page">
+  <header class="page-head"><h1>My progress and scores</h1></header>
+  <div id="account-root"><p class="muted">Loading…</p></div>
+  {% if not accounts %}<p>Accounts are not switched on for this course yet. Your progress is saved in this browser only.</p>{% endif %}
+</main>
+{% endblock %}

@@ -18,7 +18,7 @@ The website is built from the files in this folder and published with GitHub Pag
 
 ## Editing a lesson
 
-Open `content/lessons/lessonNN.md` on GitHub and click the pencil icon (every lesson page also has an "Edit this page on GitHub" link at the bottom). Commit the change, and the site rebuilds itself.
+Open `content/lessons/lessonNN.md` on GitHub and click the pencil icon. Commit the change, and the site rebuilds itself.
 
 The lesson is ordinary Markdown with a few additions:
 
@@ -66,3 +66,18 @@ The worked answer.
 4. In `course.yaml`, add `file: lessonNN.md` to the lesson's entry. It then appears in the syllabus and sidebar.
 
 To preview locally: `pip install markdown-it-py mdit-py-plugins pyyaml jinja2`, then `python site/build.py --serve` and open `http://localhost:8000`.
+
+## Learner accounts (Supabase)
+
+Accounts let learners sign up, keep their "Mark as complete" ticks and self-check answers across devices, and see the marks tutors enter. Without keys the site still works and progress stays in each browser.
+
+1. Create a free project at [supabase.com](https://supabase.com).
+2. In **SQL Editor**, paste the whole of `supabase/schema.sql` and run it. It creates the tables (`profiles`, `progress`, `quiz_answers`, `marks`) and the rules that stop learners reading or changing anyone else's records.
+3. **Authentication → URL Configuration**: set *Site URL* to `https://peter-adepoju.github.io/math-neuro-ml/` and add `https://peter-adepoju.github.io/math-neuro-ml/**` under *Redirect URLs*.
+4. **Google sign-in**: in Google Cloud Console create an OAuth client (type *Web application*) with the redirect URI shown in Supabase under **Authentication → Providers → Google**; paste the client ID and secret into that provider and enable it.
+5. **Project Settings → API**: copy the *Project URL* and the *anon public* key into `course.yaml` under `supabase:` and commit. The *service_role* key must never go in the repository.
+6. Sign up on the site, then in the SQL Editor run
+   `update public.profiles set role = 'instructor' where email = 'your@email';`
+   The *Instructor dashboard* appears in your account menu. From there you can make other people tutors, enter marks and export CSV files.
+
+Self-check scores count each learner's **first** answer to each question; later attempts are recorded but do not change the score.

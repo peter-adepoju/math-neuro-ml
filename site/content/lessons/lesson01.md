@@ -510,7 +510,7 @@ Comparing two conditions then means comparing two trajectories: for example, the
 
 {{ figure: cell076_1.svg | Two conditions as two trajectories in the plane of N1 and N2. From the teaching notebook. }}
 
-{{ plotly: cell078_1.json | Both conditions advance together, so their states can be compared at every moment. Press Play. }}
+{{ interactive: two-conditions | Condition A (blue) and condition B (red) advance together, one 50 ms bin at a time. Pale lines are each condition's full route, bold lines the route so far, and the dashed line joins the two current states, whose length is the distance between conditions. Press Play or drag the time slider. }}
 
 ::: note In practice
 Motor cortex activity during reaching is a classic example: it traces out smooth, rotation-like trajectories that are remarkably similar across reach directions (Churchland et al., 2012). Analyses like that one start from exactly the objects in this section: a `(T, n)` array, its rows as states, and distances and directions between them.
@@ -531,7 +531,7 @@ The teaching notebook's mini-lab puts the whole lesson together on the three-neu
 
 The change is dominated by N1 (+45.6 spikes/s) and N3 (+19.3), while N2 fell slightly: the stimulus mainly recruited N1 and N3. The late state's unit vector says the same in terms of pattern: most of its direction lies along N1.
 
-{{ plotly: cell081_1.json | The time cursor on the left and the population state on the right move together. Press Play, or drag the slider. }}
+{{ interactive: linked-traces | The same recording two ways. Left: the three firing-rate traces, with a dashed cursor at the current time. Right: the matching point in the plane of N1 and N2 (purple), the route so far (dark line) and the full route (grey); the two hollow circles mark the early and late states in the table. Press Play or drag the time slider. }}
 
 **Limitation.** The analysis uses Euclidean distance on raw firing rates, with no correction for the different ranges of N1, N2 and N3, and the 2D panels show only the first two neurons. A different choice of neurons to display, or a different distance measure, could change the numbers without changing the recording.
 
@@ -554,81 +554,143 @@ The **exercise notebook** continues with real data: population vectors of neuron
 These pen-and-paper exercises complement the coding exercises in the exercise notebook. Try each one before opening its answer.
 
 ::: exercise
-Give the dimension of each vector, and say what one coordinate represents: (a) one time point from a 32-channel EEG recording; (b) one $20\times20$ pixel image, flattened; (c) the mean firing rates of 150 neurons under one condition.
+Give the dimension of each vector, and say what one coordinate represents:
+
+1. one time point from a 32-channel EEG recording;
+2. one $20\times20$ pixel image, flattened;
+3. the mean firing rates of 150 neurons under one condition.
 ---answer---
-(a) Dimension 32; one coordinate is the voltage at one electrode at that time point. (b) Dimension $20 \times 20 = 400$; one coordinate is the brightness of one pixel. (c) Dimension 150; one coordinate is one neuron's mean firing rate (spikes/s) under that condition.
+1. **Dimension 32.** One coordinate is the voltage at one electrode at that time point.
+2. **Dimension $20 \times 20 = 400$.** One coordinate is the brightness of one pixel.
+3. **Dimension 150.** One coordinate is one neuron's mean firing rate (spikes/s) under that condition.
 :::
 
 ::: exercise
 For $\mathbf{u}=(3,\ -1,\ 2)$ and $\mathbf{v}=(1,\ 4,\ -2)$, compute $\mathbf{u}+\mathbf{v}$, $\mathbf{u}-\mathbf{v}$ and $3\mathbf{u}-2\mathbf{v}$.
 ---answer---
-$\mathbf{u}+\mathbf{v} = (4,\ 3,\ 0)$; $\mathbf{u}-\mathbf{v} = (2,\ -5,\ 4)$; $3\mathbf{u}-2\mathbf{v} = (9,\ -3,\ 6) - (2,\ 8,\ -4) = (7,\ -11,\ 10)$.
+Work coordinate by coordinate:
+
+$$\begin{aligned} \mathbf{u}+\mathbf{v} &= (3+1,\ -1+4,\ 2-2) = (4,\ 3,\ 0),\\ \mathbf{u}-\mathbf{v} &= (3-1,\ -1-4,\ 2+2) = (2,\ -5,\ 4),\\ 3\mathbf{u}-2\mathbf{v} &= (9,\ -3,\ 6) - (2,\ 8,\ -4) = (7,\ -11,\ 10). \end{aligned}$$
 :::
 
 ::: exercise
 Compute $\lVert (2,\ -3,\ 6) \rVert$, and the distance between $(1,\ 2,\ 3)$ and $(4,\ 6,\ 3)$.
 ---answer---
-$\lVert (2,-3,6)\rVert = \sqrt{4+9+36} = \sqrt{49} = 7$. The difference is $(3,\ 4,\ 0)$, so the distance is $\sqrt{9+16+0} = 5$.
+**Length.** $\lVert (2,-3,6)\rVert = \sqrt{4+9+36} = \sqrt{49} = 7$.
+
+**Distance.** The difference is $(4,6,3) - (1,2,3) = (3,\ 4,\ 0)$, so the distance is $\sqrt{9+16+0} = 5$.
 :::
 
 ::: exercise
 Prove that $\lVert c\mathbf{v} \rVert=|c|\lVert \mathbf{v} \rVert$, and use it to show that $\lVert\hat{\mathbf{v}}\rVert=1$ for every nonzero $\mathbf{v}$.
 ---answer---
-$\lVert c\mathbf{v}\rVert = \sqrt{\sum_i (c v_i)^2} = \sqrt{c^2 \sum_i v_i^2} = |c|\sqrt{\sum_i v_i^2} = |c|\,\lVert\mathbf{v}\rVert$, using $\sqrt{c^2} = |c|$. For nonzero $\mathbf{v}$, $\hat{\mathbf{v}} = c\,\mathbf{v}$ with $c = 1/\lVert\mathbf{v}\rVert > 0$, so $\lVert\hat{\mathbf{v}}\rVert = \lVert\mathbf{v}\rVert / \lVert\mathbf{v}\rVert = 1$.
+**The scaling rule.** Square each coordinate of $c\mathbf{v}$, add, and take the root:
+
+$$\lVert c\mathbf{v}\rVert = \sqrt{\textstyle\sum_i (c v_i)^2} = \sqrt{c^2 \textstyle\sum_i v_i^2} = |c|\sqrt{\textstyle\sum_i v_i^2} = |c|\,\lVert\mathbf{v}\rVert,$$
+
+using $\sqrt{c^2} = |c|$.
+
+**The unit vector.** For nonzero $\mathbf{v}$, $\hat{\mathbf{v}} = c\,\mathbf{v}$ with $c = 1/\lVert\mathbf{v}\rVert > 0$. By the rule above, $\lVert\hat{\mathbf{v}}\rVert = \lVert\mathbf{v}\rVert / \lVert\mathbf{v}\rVert = 1$.
 :::
 
 ::: exercise
 Normalise $(0,\ 5,\ 12)$ and $(-2,\ -2)$. Then explain why $(1,\ 2)$ and $(10,\ 20)$ have the same unit vector, and what that means if they are two population responses.
 ---answer---
-$\lVert(0,5,12)\rVert = 13$, so the unit vector is $(0,\ 5/13,\ 12/13) \approx (0,\ 0.385,\ 0.923)$. $\lVert(-2,-2)\rVert = 2\sqrt2$, so the unit vector is $(-1/\sqrt2,\ -1/\sqrt2) \approx (-0.707,\ -0.707)$. Since $(10, 20) = 10\,(1, 2)$ with a positive factor, both normalise to $(1, 2)/\sqrt5 \approx (0.447,\ 0.894)$. As population responses they have the same pattern across the two neurons (the second fires twice as fast as the first) at different overall strengths: the second is ten times stronger.
+**First vector.** $\lVert(0,5,12)\rVert = 13$, so the unit vector is $(0,\ 5/13,\ 12/13) \approx (0,\ 0.385,\ 0.923)$.
+
+**Second vector.** $\lVert(-2,-2)\rVert = 2\sqrt2$, so the unit vector is $(-1/\sqrt2,\ -1/\sqrt2) \approx (-0.707,\ -0.707)$.
+
+**Same direction.** $(10, 20) = 10\,(1, 2)$ with a positive factor, so both normalise to $(1, 2)/\sqrt5 \approx (0.447,\ 0.894)$.
+
+**Meaning.** As population responses they have the same pattern across the two neurons (the second fires twice as fast as the first), at different overall strengths: the second response is ten times stronger.
 :::
 
 ::: exercise
 A vector holds a neuron's firing rate (spikes/s) and its membrane potential (mV). Which of these make sense: adding two such vectors; scaling one by 2; computing the Euclidean distance between two of them? Explain.
 ---answer---
-All three can be computed, but not all are meaningful. Adding works coordinate by coordinate, so units match within each coordinate, but the sum of two states is rarely a state you could observe (half the sum, an average, is often useful). Scaling by 2 doubles a rate sensibly, but doubling a membrane potential of $-70$ mV to $-140$ mV is not "the same state, twice as strong": voltage is measured from an arbitrary reference. The Euclidean distance adds $(\text{spikes/s})^2$ to $\text{mV}^2$, so its value depends on the units chosen and one feature can dominate; standardise both features before using distance.
+All three can be computed, but not all are meaningful.
+
+**Adding.** Units match within each coordinate, so the sum is defined. But the sum of two states is rarely a state you could observe; half the sum, an average, is often more useful.
+
+**Scaling by 2.** Doubling a firing rate is sensible. Doubling a membrane potential of $-70$ mV to $-140$ mV is not "the same state, twice as strong", because voltage is measured from an arbitrary reference.
+
+**Distance.** It adds $(\text{spikes/s})^2$ to $\text{mV}^2$, so its value depends on the units chosen, and one feature can dominate. Standardise both features before using distance.
 :::
 
 ::: exercise
 What are the NumPy shapes of `a + b` when `a` has shape `(3,)` and `b` has shape `(1, 3)`? And when `a` has shape `(3, 1)` and `b` has shape `(1, 3)`? Explain using the broadcasting rule.
 ---answer---
-Shapes are lined up from the right. `(3,)` is treated as `(1, 3)`, and adding it to `(1, 3)` gives `(1, 3)`. For `(3, 1)` and `(1, 3)`, each size-1 axis stretches to match the other array, so the result has shape `(3, 3)`: every pairwise sum.
+Shapes are lined up from the right, and any axis of size 1 stretches to match.
+
+**`(3,)` with `(1, 3)`.** The flat array is treated as `(1, 3)`, so the result has shape `(1, 3)`.
+
+**`(3, 1)` with `(1, 3)`.** Each size-1 axis stretches to match the other array, so the result has shape `(3, 3)`: every pairwise sum.
 :::
 
 ::: exercise
 Express $(7,\ 1)$ as a combination of $\mathbf{b}_1=(1,\ 1)$ and $\mathbf{b}_2=(1,\ -1)$. What are its coordinates in this basis?
 ---answer---
-Solve $a + b = 7$ and $a - b = 1$: $a = 4$ and $b = 3$. So $(7, 1) = 4\,\mathbf{b}_1 + 3\,\mathbf{b}_2$, and its coordinates in this basis are $(4,\ 3)$.
+We need $a\,(1, 1) + b\,(1, -1) = (7, 1)$, that is
+
+$$a + b = 7, \qquad a - b = 1.$$
+
+Adding the equations gives $a = 4$; then $b = 3$. So $(7, 1) = 4\,\mathbf{b}_1 + 3\,\mathbf{b}_2$, and its coordinates in this basis are $(4,\ 3)$.
 :::
 
 ::: exercise
 Is $(3,\ 8,\ 5)$ in the span of $\mathbf{u}_{\text{stim}}=(1,1,0)$ and $\mathbf{u}_{\text{motor}}=(0,1,1)$? Is $(2,\ 1,\ 2)$? Show your working.
 ---answer---
-Combinations have the form $(a,\ a+b,\ b)$. For $(3, 8, 5)$: $a = 3$, $b = 5$, and $a + b = 8$ matches, so it is in the span. For $(2, 1, 2)$: $a = 2$, $b = 2$, but $a + b = 4 \ne 1$, so it is not.
+Every combination has the form $a(1,1,0) + b(0,1,1) = (a,\ a+b,\ b)$.
+
+**$(3, 8, 5)$.** The first and last coordinates force $a = 3$, $b = 5$. The middle one needs $a + b = 8$, which holds, so the state **is** in the span.
+
+**$(2, 1, 2)$.** Now $a = 2$, $b = 2$, but $a + b = 4 \ne 1$, so the state is **not** in the span.
 :::
 
 ::: exercise
 Are $(1,\ 2,\ 0)$, $(0,\ 1,\ 1)$ and $(1,\ 3,\ 1)$ linearly independent? What is the dimension of their span?
 ---answer---
-They are dependent: $(1, 3, 1) = (1, 2, 0) + (0, 1, 1)$. The first two are independent (neither is a multiple of the other), so the span is a plane through the origin, of dimension 2.
+**Dependent.** The third is the sum of the first two: $(1, 3, 1) = (1, 2, 0) + (0, 1, 1)$.
+
+**Dimension 2.** The first two are independent (neither is a multiple of the other), so together the three vectors span a plane through the origin.
 :::
 
 ::: exercise
 A two-neuron state moves through $\mathbf{r}(0)=(10,\ 10)$, $\mathbf{r}(1)=(13,\ 14)$, $\mathbf{r}(2)=(13,\ 20)$ spikes/s, with bins $0.5$ s apart. Compute the two step lengths, the path length, the net displacement, and the average speed through state space.
 ---answer---
-Steps: $(3, 4)$ with length 5, and $(0, 6)$ with length 6 spikes/s. Path length $5 + 6 = 11$ spikes/s. Net displacement $\lVert(3, 10)\rVert = \sqrt{109} \approx 10.44$ spikes/s, shorter than the path, as the triangle inequality requires. Average speed: path length over elapsed time, $11 / 1.0\ \text{s} = 11$ (spikes/s) per second.
+| Quantity | Working | Value |
+|---|---|---|
+| step 1 | $\lVert(13,14)-(10,10)\rVert = \lVert(3,\ 4)\rVert$ | 5 spikes/s |
+| step 2 | $\lVert(13,20)-(13,14)\rVert = \lVert(0,\ 6)\rVert$ | 6 spikes/s |
+| path length | $5 + 6$ | 11 spikes/s |
+| net displacement | $\lVert(13,20)-(10,10)\rVert = \lVert(3,\ 10)\rVert = \sqrt{109}$ | 10.44 spikes/s |
+| average speed | path length / elapsed time $= 11 / 1.0$ s | 11 (spikes/s) per second |
+
+The net displacement is shorter than the path, as the triangle inequality requires.
 :::
 
 ::: exercise
 Two patients are described by (age in years, cholesterol in mg/dL): $(30,\ 200)$ and $(60,\ 210)$. Compute their Euclidean distance. Which feature dominates it, and would that change if cholesterol were recorded in g/dL instead?
 ---answer---
-The difference is $(30,\ 10)$, so the distance is $\sqrt{900 + 100} = \sqrt{1000} \approx 31.6$. Age supplies 90% of the squared distance. In g/dL the cholesterol difference becomes $0.1$, so the distance is $\sqrt{900 + 0.01} \approx 30.0$ and age dominates almost completely. The units, not the patients, decided which feature mattered.
+**Distance.** The difference is $(30,\ 10)$, so the distance is $\sqrt{900 + 100} = \sqrt{1000} \approx 31.6$.
+
+**Dominant feature.** Age supplies $900/1000 = 90\%$ of the squared distance.
+
+**In g/dL.** The cholesterol difference becomes $0.1$, so the distance is $\sqrt{900 + 0.01} \approx 30.0$ and age dominates almost completely. The units, not the patients, decided which feature mattered.
 :::
 
 ::: exercise
 *(Challenge.)* Show that for every vector, $\lVert \mathbf{v} \rVert_\infty \le \lVert \mathbf{v} \rVert_2 \le \lVert \mathbf{v} \rVert_1$. Check it on $\mathbf{v}=(3,\ -4,\ 12)$.
 ---answer---
-Let $m = \max_i |v_i|$. Then $m^2 \le \sum_i v_i^2$, so $\lVert\mathbf{v}\rVert_\infty \le \lVert\mathbf{v}\rVert_2$. Also $\big(\sum_i |v_i|\big)^2 = \sum_i v_i^2 + \sum_{i \ne j} |v_i||v_j| \ge \sum_i v_i^2$, because the cross terms are never negative, so $\lVert\mathbf{v}\rVert_2 \le \lVert\mathbf{v}\rVert_1$. For $(3, -4, 12)$: $\lVert\mathbf{v}\rVert_\infty = 12 \le \lVert\mathbf{v}\rVert_2 = 13 \le \lVert\mathbf{v}\rVert_1 = 19$.
+**First inequality.** Let $m = \max_i |v_i|$. Then $m^2$ is one of the terms of $\sum_i v_i^2$, so $m^2 \le \sum_i v_i^2$ and $\lVert\mathbf{v}\rVert_\infty \le \lVert\mathbf{v}\rVert_2$.
+
+**Second inequality.** Expanding the square of the $L_1$ norm,
+
+$$\Big(\textstyle\sum_i |v_i|\Big)^2 = \textstyle\sum_i v_i^2 + \sum_{i \ne j} |v_i|\,|v_j| \;\ge\; \sum_i v_i^2,$$
+
+because the cross terms are never negative. Taking square roots, $\lVert\mathbf{v}\rVert_2 \le \lVert\mathbf{v}\rVert_1$.
+
+**Check.** For $(3, -4, 12)$: $\lVert\mathbf{v}\rVert_\infty = 12 \le \lVert\mathbf{v}\rVert_2 = 13 \le \lVert\mathbf{v}\rVert_1 = 19$.
 :::
 
 ## Practise in Python
@@ -636,8 +698,6 @@ Let $m = \max_i |v_i|$. Then $m^2 \le \sum_i v_i^2$, so $\lVert\mathbf{v}\rVert_
 The teaching notebook runs every example on this page; the exercise notebook has seven graded exercises worth 100 points, including a real-data exercise on mouse visual cortex. Both open in Google Colab.
 
 {{ colab: week1/lesson1/Lesson1_Teaching_Notebook.ipynb Open the teaching notebook }} {{ colab: week1/lesson1/Lesson1_Exercises_Notebook.ipynb Open the exercise notebook }}
-
-**Next: Lesson 2, Dot products and projection.** Lesson 1 measured one vector at a time. Lesson 2 asks how two vectors relate: how aligned their directions are, how much of one lies along the other, and how a neuron combines its inputs.
 
 ## Further reading
 
