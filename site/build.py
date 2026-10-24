@@ -204,7 +204,7 @@ def build():
 
     for name in ["account", "dashboard"]:
         open(os.path.join(OUT, f"{name}.html"), "w").write(env.get_template(f"{name}.html").render(**common, root=""))
-    for name in ["index", "project", "resources"]:
+    for name in ["index", "project", "resources", "privacy"]:
         extra = {}
         if name != "index":
             src = open(os.path.join(HERE, "content", "pages", f"{name}.md")).read()

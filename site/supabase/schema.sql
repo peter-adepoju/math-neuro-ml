@@ -36,7 +36,7 @@ create table if not exists public.marks (
   score       numeric not null,
   max_score   numeric not null default 100,
   comment     text,
-  entered_by  uuid references public.profiles (id),
+  entered_by  uuid references public.profiles (id) on delete set null,
   entered_at  timestamptz not null default now()
 );
 
