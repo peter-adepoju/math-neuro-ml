@@ -21,7 +21,7 @@ supabase:
 instructor:
   name: "Peter Adepoju"
   role: "Course creator and instructor"
-  photo: ""            # put an image in site/static/img/ and write its file name here, e.g. "peter.jpg"
+  photo: "peter.jpg"   # image in site/static/img/
   # Each item in 'bio' is one paragraph.
   bio:
     - >-

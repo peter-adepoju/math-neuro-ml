@@ -67,7 +67,7 @@ pre code { background: none; padding: 0; }
 .hero-tag { font-size: 1.25rem; max-width: 52ch; margin: 0.4rem 0 1.2rem; opacity: 0.95; }
 .hero-by { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 1.6rem; }
 .hero-by a { color: #fff; font-weight: 700; }
-.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--sky); color: var(--blue-deep); display: grid; place-items: center; font-weight: 700; font-size: 0.9rem; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--sky); color: var(--blue-deep); display: grid; place-items: center; font-weight: 700; font-size: 0.9rem; object-fit: cover; border: 2px solid rgba(255,255,255,.7); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
 .hero-stats { list-style: none; padding: 1.2rem 0 0; margin: 2rem 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; border-top: 1px solid rgba(255,255,255,0.25); }
 .hero-stats li { font-size: 0.98rem; opacity: 0.95; }
