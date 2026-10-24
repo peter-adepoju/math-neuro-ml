@@ -15,8 +15,8 @@ site_url: "https://peter-adepoju.github.io/math-neuro-ml/"
 # Project Settings -> API. Both are safe to publish; the database rules in site/supabase/schema.sql protect the data.
 # While these are empty, the site works without accounts and progress is kept in each learner's browser.
 supabase:
-  url: ""
-  anon_key: ""
+  url: "https://znmpvbzsuwalkiushazg.supabase.co"
+  anon_key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpubXB2YnpzdXdhbGtpdXNoYXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4NTI0NjIsImV4cCI6MjEwODQyODQ2Mn0.a4H_MtnIE-H4sEeBcxTYq-QiPvfdZKMuWBjLXv_C8OE"
 
 instructor:
   name: "Peter Adepoju"
