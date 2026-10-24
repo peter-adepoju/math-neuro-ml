@@ -71,7 +71,7 @@
       const xt = o.xtick || tick, yt = o.ytick || tick;
       for (let x = Math.ceil(o.x[0] / xt - 1e-9) * xt; x <= o.x[1] + 1e-9; x += xt) if (Math.abs(x) > 1e-9 || o.frame)
         text(fmt(x), x, y0, { dy: 18, anchor: "middle", size: 13, color: C.muted, layer: back });
-      for (let y = Math.ceil(o.y[0] / yt - 1e-9) * yt; y <= o.y[1] + 1e-9; y += yt) if (Math.abs(y) > 1e-9 || o.frame)
+      if (!o.noYTicks) for (let y = Math.ceil(o.y[0] / yt - 1e-9) * yt; y <= o.y[1] + 1e-9; y += yt) if (Math.abs(y) > 1e-9 || o.frame)
         text(fmt(y), x0, y, { dx: -6, dy: 4, anchor: "end", size: 13, color: C.muted, layer: back });
       text(o.labels[0], o.x[1], y0, { dx: 0, dy: 34, anchor: "end", size: 14, color: C.muted, layer: back });
       text(o.labels[1], x0, o.y[1], { dx: 8, dy: 12, anchor: "start", size: 14, color: C.muted, layer: back });
