@@ -97,7 +97,7 @@ create trigger quiz_keep_first before update on public.quiz_answers
 -- ---------------------------------------------------------------- row-level security
 -- Explicit access for signed-in users (rows are still limited by the policies below). Signed-out visitors get none.
 -- This works whether or not "Automatically expose new tables" was ticked when the project was created.
-revoke all on public.profiles, public.progress, public.quiz_answers, public.marks from anon;
+revoke all on public.profiles, public.progress, public.quiz_answers, public.marks from anon, authenticated;
 grant select, insert, update, delete on public.profiles, public.progress, public.quiz_answers, public.marks to authenticated;
 grant usage, select on all sequences in schema public to authenticated;
 
