@@ -392,3 +392,5 @@ td .btn-colab { white-space: nowrap; padding: 0.35rem 0.7rem; font-size: 0.85rem
 .ix-select select { max-width: 100%; min-width: 0; font: inherit; font-weight: 400; padding: 0.3rem 0.5rem; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
 .ix-cell { cursor: pointer; }
 .ix-cell:focus-visible { outline: 3px solid var(--blue); }
+.ix-weights { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.2rem 1.2rem; margin: 0.6rem 0; }
+.ix-weights .ix-slider { min-width: 0; }
