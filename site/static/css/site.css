@@ -288,7 +288,7 @@ main.page { max-width: 900px; margin: 0 auto; padding: 2rem clamp(16px, 4vw, 32p
 .ix-slider input { flex: 1; accent-color: var(--blue); min-width: 100px; }
 .ix-slider output { font-family: var(--mono); font-size: 0.9rem; min-width: 3.5em; text-align: right; }
 .ix-slabel { color: var(--muted); font-weight: 600; white-space: nowrap; }
-.ix-buttons { display: grid; grid-template-columns: 5.6rem 1fr; gap: 0.5rem 0.8rem; align-items: center; margin: 0 0 0.75rem; }
+.ix-buttons { display: grid; grid-template-columns: minmax(5.6rem, max-content) 1fr; gap: 0.5rem 0.8rem; align-items: center; margin: 0 0 0.75rem; }
 .ix-buttons > .ix-btns { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .ix-buttons:not(:has(.ix-slabel)) { grid-template-columns: 1fr; }
 .ix-btn { font: 600 0.9rem var(--sans); padding: 0.35em 0.8em; border: 1.5px solid var(--blue-line); background: #fff; color: var(--blue-dark); border-radius: 6px; cursor: pointer; }
@@ -381,3 +381,14 @@ main.page.wide { max-width: 1240px; }
 @media (max-width: 760px) { .mark-form { grid-template-columns: 1fr 1fr; } .mark-form .wide { grid-column: 1 / -1; } }
 /* Colab buttons inside a table cell stay on one line */
 td .btn-colab { white-space: nowrap; padding: 0.35rem 0.7rem; font-size: 0.85rem; margin: 0; }
+
+/* three-panel interactive figures and a row of controls under a figure */
+.ix-three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; align-items: start; }
+@media (max-width: 900px) { .ix-three { grid-template-columns: 1fr; } }
+.ix-controls-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.4rem; margin: 0.6rem 0; }
+.ix-controls-row .ix-slider { flex: 1 1 260px; }
+.ix-select { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+.ix-select { max-width: 100%; }
+.ix-select select { max-width: 100%; min-width: 0; font: inherit; font-weight: 400; padding: 0.3rem 0.5rem; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+.ix-cell { cursor: pointer; }
+.ix-cell:focus-visible { outline: 3px solid var(--blue); }

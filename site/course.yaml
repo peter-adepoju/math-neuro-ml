@@ -88,7 +88,7 @@ parts:
 # Lessons. 'file' names the Markdown file in content/lessons/; lessons without one are listed as "coming soon".
 lessons:
   - {n: 1, part: linear-algebra, title: "Vectors as Representations", file: lesson01.md, minutes: 90, topics: ["Scalars and vectors", "Norms and distances", "Unit vectors", "Basis and coordinates", "Population vectors"]}
-  - {n: 2, part: linear-algebra, title: "Dot Products and Projection", minutes: 90, topics: ["Dot product and angle", "Cosine similarity", "Projection", "Weighted sums"]}
+  - {n: 2, part: linear-algebra, title: "Dot Products and Projection", file: lesson02.md, minutes: 90, topics: ["Dot product and angle", "Cosine similarity", "Projection", "Weighted sums"]}
   - {n: 3, part: linear-algebra, title: "Matrices as Datasets", minutes: 90, topics: ["Rows, columns and transpose", "Special matrices", "Centring and scaling"]}
   - {n: 4, part: linear-algebra, title: "Matrix Transformations", minutes: 90, topics: ["Matrix products", "Rank and inverses", "Affine maps", "Encoding and decoding"]}
   - {n: 5, part: linear-algebra, title: "Linear Systems and Least Squares", minutes: 100, topics: ["Solving Ax = b", "Normal equations", "Pseudoinverse", "Train and test"]}
