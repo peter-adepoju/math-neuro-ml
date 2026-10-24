@@ -95,6 +95,12 @@ create trigger quiz_keep_first before update on public.quiz_answers
   for each row execute function public.keep_first_attempt();
 
 -- ---------------------------------------------------------------- row-level security
+-- Explicit access for signed-in users (rows are still limited by the policies below). Signed-out visitors get none.
+-- This works whether or not "Automatically expose new tables" was ticked when the project was created.
+revoke all on public.profiles, public.progress, public.quiz_answers, public.marks from anon;
+grant select, insert, update, delete on public.profiles, public.progress, public.quiz_answers, public.marks to authenticated;
+grant usage, select on all sequences in schema public to authenticated;
+
 alter table public.profiles     enable row level security;
 alter table public.progress     enable row level security;
 alter table public.quiz_answers enable row level security;
