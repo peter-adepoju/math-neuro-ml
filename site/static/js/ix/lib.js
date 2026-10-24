@@ -69,7 +69,7 @@
       el("line", { y1: Y(o.y[0]), y2: Y(o.y[1]), x1: X(x0), x2: X(x0), stroke: C.axis, "stroke-width": 1.3 }, back);
       const tick = o.tick || o.grid * (Math.abs(o.x[1] - o.x[0]) > 12 * o.grid ? 5 : 2);
       const xt = o.xtick || tick, yt = o.ytick || tick;
-      for (let x = Math.ceil(o.x[0] / xt - 1e-9) * xt; x <= o.x[1] + 1e-9; x += xt) if (Math.abs(x) > 1e-9 || o.frame)
+      if (!o.noXTicks) for (let x = Math.ceil(o.x[0] / xt - 1e-9) * xt; x <= o.x[1] + 1e-9; x += xt) if (Math.abs(x) > 1e-9 || o.frame)
         text(fmt(x), x, y0, { dy: 18, anchor: "middle", size: 13, color: C.muted, layer: back });
       if (!o.noYTicks) for (let y = Math.ceil(o.y[0] / yt - 1e-9) * yt; y <= o.y[1] + 1e-9; y += yt) if (Math.abs(y) > 1e-9 || o.frame)
         text(fmt(y), x0, y, { dx: -6, dy: 4, anchor: "end", size: 13, color: C.muted, layer: back });

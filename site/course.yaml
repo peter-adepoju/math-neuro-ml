@@ -93,7 +93,7 @@ lessons:
   - {n: 4, part: linear-algebra, title: "Matrix Transformations", file: lesson04.md, minutes: 90, topics: ["Matrix products", "Rank and inverses", "Affine maps", "Encoding and decoding"]}
   - {n: 5, part: linear-algebra, title: "Linear Systems and Least Squares", file: lesson05.md, minutes: 100, topics: ["Solving Ax = b", "Normal equations", "Pseudoinverse", "Train and test"]}
   - {n: 6, part: linear-algebra, title: "Eigenstructure and Stability", file: lesson06.md, minutes: 100, topics: ["Eigenvalues and eigenvectors", "Stability", "Modes and timescales"]}
-  - {n: 7, part: linear-algebra, title: "Covariance and PCA", minutes: 100, topics: ["Covariance", "Principal components", "Explained variance", "Leakage"]}
+  - {n: 7, part: linear-algebra, title: "Covariance and PCA", file: lesson07.md, minutes: 100, topics: ["Covariance", "Principal components", "Explained variance", "Leakage"]}
   - {n: 8, part: calculus, title: "Functions, Limits and Continuity", minutes: 90, topics: ["Function families", "Limits", "Continuity", "Sampling pitfalls"]}
   - {n: 9, part: calculus, title: "Derivatives and Sensitivity", minutes: 90, topics: ["The derivative", "Linear approximation", "Finite differences", "Noisy data"]}
   - {n: 10, part: calculus, title: "Chain Rule and Backpropagation", minutes: 100, topics: ["Chain rule", "Computation graphs", "Gradient checking", "Vanishing gradients"]}
