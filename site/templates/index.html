@@ -7,7 +7,6 @@
       <p class="hero-kicker">Online course</p>
       <h1>{{ C.title }}</h1>
       <p class="hero-tag">{{ C.tagline }}</p>
-      <p class="hero-by">{% if C.instructor.photo %}<img class="avatar" src="{{ root }}static/img/{{ C.instructor.photo }}" alt="" width="36" height="36">{% else %}<span class="avatar" aria-hidden="true">PA</span>{% endif %}Created by <a href="#instructor">{{ C.instructor.name }}</a></p>
       <div class="hero-actions">
         <a class="btn btn-light" id="start-btn" href="{{ root }}lessons/lesson01.html">Start Lesson 1</a>
         <a class="btn btn-ghost" href="#syllabus">View the syllabus</a>
