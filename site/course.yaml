@@ -109,4 +109,4 @@ lessons:
   - {n: 20, part: probability, title: "Inference and Model Checking", file: lesson20.md, minutes: 100, topics: ["Standard errors", "Bootstrap", "Correlation", "ROC curves"]}
   - {n: 21, part: differential-equations, title: "ODEs and the Passive Membrane", file: lesson21.md, minutes: 100, topics: ["First-order ODEs", "Time constants", "Membrane equation", "Euler's method"]}
   - {n: 22, part: differential-equations, title: "Leaky Integrate-and-Fire Neurons", file: lesson22.md, minutes: 100, topics: ["Threshold and reset", "f–I curve", "Noisy drive"]}
-  - {n: 23, part: differential-equations, title: "Coupled ODEs and Wilson–Cowan", minutes: 100, topics: ["Phase plane", "Fixed points and stability", "E–I oscillations"]}
+  - {n: 23, part: differential-equations, title: "Coupled ODEs and Wilson–Cowan", file: lesson23.md, minutes: 100, topics: ["Phase plane", "Fixed points and stability", "E–I oscillations"]}

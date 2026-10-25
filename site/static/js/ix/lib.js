@@ -237,7 +237,7 @@
     const dx = (x1 - x0) / n, dy = (y1 - y0) / m, V = [];
     for (let j = 0; j <= m; j++) { const row = []; for (let i = 0; i <= n; i++) row.push(f(x0 + i * dx, y0 + j * dy)); V.push(row); }
     levels.forEach((L, li) => {
-      let d = "";
+      let d = ""; const segs = [];
       const ip = (a, b, va, vb) => a + (b - a) * (L - va) / ((vb - va) || 1e-12);
       for (let j = 0; j < m; j++) for (let i = 0; i < n; i++) {
         const xa = x0 + i * dx, xb = xa + dx, ya = y0 + j * dy, yb = ya + dy;
@@ -247,8 +247,19 @@
         if ((v10 < L) !== (v11 < L)) pts.push([xb, ip(ya, yb, v10, v11)]);
         if ((v01 < L) !== (v11 < L)) pts.push([ip(xa, xb, v01, v11), yb]);
         if ((v00 < L) !== (v01 < L)) pts.push([xa, ip(ya, yb, v00, v01)]);
-        for (let k = 0; k + 1 < pts.length; k += 2) d += `M${P.X(pts[k][0]).toFixed(1)} ${P.Y(pts[k][1]).toFixed(1)}L${P.X(pts[k + 1][0]).toFixed(1)} ${P.Y(pts[k + 1][1]).toFixed(1)}`;
+        for (let k = 0; k + 1 < pts.length; k += 2) segs.push([[P.X(pts[k][0]), P.Y(pts[k][1])], [P.X(pts[k + 1][0]), P.Y(pts[k + 1][1])]]);
       }
+      /* Chain the cell segments into polylines, so that dash patterns run continuously. */
+      const key = q => q[0].toFixed(2) + "," + q[1].toFixed(2), ends = new Map(), used = new Array(segs.length).fill(false);
+      segs.forEach((sg, k) => [0, 1].forEach(e => { const kk = key(sg[e]); if (!ends.has(kk)) ends.set(kk, []); ends.get(kk).push([k, e]); }));
+      const next = (q, skip) => (ends.get(key(q)) || []).find(([k]) => !used[k] && k !== skip);
+      segs.forEach((sg, k) => {
+        if (used[k]) return; used[k] = true;
+        const line = [sg[0], sg[1]];
+        for (let f = next(line[line.length - 1], k); f; f = next(line[line.length - 1], f[0])) { used[f[0]] = true; line.push(segs[f[0]][1 - f[1]]); }
+        for (let f = next(line[0], k); f; f = next(line[0], f[0])) { used[f[0]] = true; line.unshift(segs[f[0]][1 - f[1]]); }
+        d += line.map((q, i) => (i ? "L" : "M") + q[0].toFixed(1) + " " + q[1].toFixed(1)).join("");
+      });
       if (d) el("path", { d, fill: "none", stroke: s.colorFn ? s.colorFn(L, li) : (s.color || C.blue), "stroke-width": s.width || 1.3, "stroke-dasharray": s.dashFn ? s.dashFn(L, li) : "", opacity: s.opacity || 1 }, s.layer || P.layer);
     });
   }
