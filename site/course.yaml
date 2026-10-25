@@ -40,8 +40,6 @@ instructor:
     - {icon: linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/peter-adepoju"}
     - {icon: github, label: "GitHub", url: "https://github.com/peter-adepoju"}
     - {icon: scholar, label: "Google Scholar", url: "https://scholar.google.com/citations?user=-QpcxLAAAAAJ&hl=en"}
-    - {icon: x, label: "X (Twitter)", url: "https://x.com/peter_depoju"}
-    - {icon: medium, label: "Medium", url: "https://medium.com/@petera_9793"}
     - {icon: email, label: "Email", url: "mailto:petera@aims.ac.za"}
 
 outcomes:
