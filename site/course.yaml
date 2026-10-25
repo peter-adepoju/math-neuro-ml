@@ -103,7 +103,7 @@ lessons:
   - {n: 14, part: calculus, title: "Multivariable Gradients", file: lesson14.md, minutes: 100, topics: ["Partial derivatives", "Gradient and contours", "Hessian"]}
   - {n: 15, part: calculus, title: "Multidimensional Optimisation", file: lesson15.md, minutes: 100, topics: ["Conditioning", "Momentum", "Regularisation", "Validation"]}
   - {n: 16, part: probability, title: "Probability Rules", file: lesson16.md, minutes: 90, topics: ["Events and axioms", "Conditional probability", "Total probability", "Confusion matrices"]}
-  - {n: 17, part: probability, title: "Random Variables and Variability", minutes: 90, topics: ["Distributions", "Expectation and variance", "CV and Fano factor"]}
+  - {n: 17, part: probability, title: "Random Variables and Variability", file: lesson17.md, minutes: 90, topics: ["Distributions", "Expectation and variance", "CV and Fano factor"]}
   - {n: 18, part: probability, title: "Binomial, Poisson and Gaussian", minutes: 100, topics: ["Binomial", "Poisson", "Gaussian and CLT", "Likelihood"]}
   - {n: 19, part: probability, title: "Bayesian Inference and Decisions", minutes: 100, topics: ["Bayes' rule", "Posterior updating", "Decisions and loss"]}
   - {n: 20, part: probability, title: "Inference and Model Checking", minutes: 100, topics: ["Standard errors", "Bootstrap", "Correlation", "ROC curves"]}
