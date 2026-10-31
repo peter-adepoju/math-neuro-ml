@@ -48,7 +48,8 @@ pre code { background: none; padding: 0; }
 .topnav a { color: #fff; text-decoration: none; font-weight: 600; }
 .topnav a:hover { text-decoration: underline; color: #fff; }
 .search { position: relative; width: min(300px, 32vw); }
-.search input { width: 100%; padding: 0.45rem 0.8rem; border-radius: 6px; border: 0; font: inherit; font-size: 0.95rem; }
+.search input { width: 100%; padding: 0.45rem 0.8rem; border-radius: 6px; border: 0; font: inherit; font-size: 0.95rem; background: #fff; color: #1d232a; }
+html[data-theme="light"] { color-scheme: light; }
 .search-results { position: absolute; right: 0; top: calc(100% + 6px); width: min(460px, 92vw); max-height: 70vh; overflow: auto; background: #fff; color: var(--ink);
   border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0, 40, 80, 0.18); padding: 0.4rem; }
 .search-results a { display: block; padding: 0.55rem 0.7rem; border-radius: 6px; text-decoration: none; color: var(--ink); }
