@@ -41,8 +41,42 @@
 {% block body %}{% endblock %}
 <footer class="footer">
   <div class="footer-in">
-    <p><strong>{{ C.title }}</strong>. Created by {{ C.instructor.name }}.</p>
-    <p><a href="{{ root }}index.html#syllabus">Lessons</a> · <a href="{{ root }}project.html">Project</a> · <a href="{{ root }}resources.html">Resources</a> · <a href="{{ root }}privacy.html">Privacy</a> · <a href="https://github.com/{{ C.repo }}">Course repository on GitHub</a></p>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="footer-logo" href="{{ root }}index.html"><span class="brand-mark" aria-hidden="true">M</span><span>{{ C.short_title }}</span></a>
+        <p class="footer-title">{{ C.title }}</p>
+        <p class="footer-tag">{{ C.tagline }}</p>
+      </div>
+      <nav class="footer-col" aria-label="Course">
+        <p class="footer-head">Course</p>
+        <ul>
+          <li><a href="{{ root }}index.html#about">About</a></li>
+          <li><a href="{{ root }}index.html#syllabus">Syllabus</a></li>
+          <li><a href="{{ root }}project.html">Project</a></li>
+          <li><a href="{{ root }}resources.html">Resources</a></li>
+          <li><a href="{{ root }}index.html#faq">FAQ</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="Parts">
+        <p class="footer-head">Parts</p>
+        <ul>
+          {% for p in C.parts %}<li><a href="{{ root }}index.html#part-{{ p.id }}">{{ p.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="More">
+        <p class="footer-head">More</p>
+        <ul>
+          <li><a href="{{ root }}index.html#instructor">Instructor</a></li>
+          <li><a href="https://github.com/{{ C.repo }}">Course repository on GitHub</a></li>
+          <li><a href="{{ root }}privacy.html">Privacy</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 {{ C.instructor.name }}</p>
+      <p><a href="{{ root }}privacy.html">Privacy</a><span aria-hidden="true"> · </span><a href="https://github.com/{{ C.repo }}">GitHub</a></p>
+    </div>
   </div>
 </footer>
 </body>
