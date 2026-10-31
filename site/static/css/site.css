@@ -624,3 +624,110 @@ html.standalone .app-promo, html.standalone [data-install], html.standalone [dat
   .sheet-wrap { align-items: flex-end; }
   .sheet { border-radius: 18px 18px 0 0; }
 }
+
+/* ================================================================ dark mode
+   html[data-theme="dark"] is set before the page paints (see base.html), from the reader's choice or,
+   on Auto, from the device setting. The notebook figures (static SVG and Plotly) stay on white cards,
+   because their colours were chosen for white; the site's own interactive figures are recoloured below. */
+.theme-btn { display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 10px; background: rgba(255, 255, 255, 0.12); color: #fff; cursor: pointer; flex: none; }
+.theme-btn:hover { background: rgba(255, 255, 255, 0.22); }
+.theme-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.theme-btn .ti { display: none; }
+html[data-theme-pref="auto"] .theme-btn .ti-auto, html[data-theme-pref="light"] .theme-btn .ti-light, html[data-theme-pref="dark"] .theme-btn .ti-dark { display: block; }
+.theme-switch { display: inline-flex; gap: 0.2rem; align-items: center; padding: 0.15rem; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 99px; }
+.theme-switch button { border: 0; background: none; color: #c9d8e6; font: 600 0.82rem var(--sans); padding: 0.25rem 0.7rem; border-radius: 99px; cursor: pointer; }
+.theme-switch button[aria-pressed="true"] { background: #fff; color: var(--blue-deep); }
+.footer-bottom { align-items: center; }
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --blue: #4aa8e8; --blue-dark: #0e3a5e; --blue-deep: #0b2a44; --blue-tint: #15304a; --blue-line: #2a5577;
+  --ink: #e3e9ef; --muted: #9fb0bf; --line: #2a3846; --bg: #10181f; --bg-soft: #17222d;
+  --ok: #3fc49a; --bad: #f08a3c;
+}
+html[data-theme="dark"] body { background: var(--bg); }
+html[data-theme="dark"] a:hover { color: #8ccaf3; }
+html[data-theme="dark"] pre { background: #0c131a; }
+html[data-theme="dark"] code { background: #1d2a36; }
+html[data-theme="dark"] .skip, html[data-theme="dark"] .btn { background: transparent; }
+html[data-theme="dark"] .btn { color: var(--blue); border-color: var(--blue); }
+html[data-theme="dark"] .btn:hover { background: var(--blue-tint); color: #bfe2fb; }
+html[data-theme="dark"] .btn-primary, html[data-theme="dark"] a.pager-next, html[data-theme="dark"] .ix-btn[aria-pressed="true"] { background: #2b86c5; border-color: #2b86c5; color: #fff; }
+html[data-theme="dark"] .btn-primary:hover, html[data-theme="dark"] a.pager-next:hover { background: #3b97d6; color: #fff; }
+html[data-theme="dark"] .btn-light { background: #e3eef7; color: #0b2a44; border-color: #e3eef7; }
+html[data-theme="dark"] .btn-ghost { color: #fff; border-color: rgba(255, 255, 255, 0.7); }
+html[data-theme="dark"] .brand-mark { color: #0e3a5e; }
+html[data-theme="dark"] .search input { background: #1d2a36; color: var(--ink); }
+html[data-theme="dark"] .search-results, html[data-theme="dark"] .acct-menu, html[data-theme="dark"] .sheet, html[data-theme="dark"] .auth-dialog { background: #18232e; color: var(--ink); border-color: var(--line); }
+html[data-theme="dark"] .search-results mark { background: #5a4a12; }
+html[data-theme="dark"] .acct-signin { background: #e3eef7; color: #0b2a44; }
+html[data-theme="dark"] .hero { background: #0b2236; }
+html[data-theme="dark"] .subnav, html[data-theme="dark"] .part-card, html[data-theme="dark"] .exercise, html[data-theme="dark"] .lp-list,
+html[data-theme="dark"] .inst-links a, html[data-theme="dark"] .outline li.current a, html[data-theme="dark"] .data-table .part-row th,
+html[data-theme="dark"] .auth-or span { background: var(--bg); }
+html[data-theme="dark"] .outline li a:hover { background: #1f2c38; }
+html[data-theme="dark"] .outline li.soon > span, html[data-theme="dark"] .outline em, html[data-theme="dark"] .lp-chev { color: #6f8090; }
+html[data-theme="dark"] .tick { border-color: #546474; }
+html[data-theme="dark"] .part-chip { background: color-mix(in srgb, var(--part) 22%, #10181f); border-color: color-mix(in srgb, var(--part) 55%, #10181f); }
+html[data-theme="dark"] .lesson-summary { color: #c3ced8; }
+html[data-theme="dark"] .objectives { background: #13283b; border-color: #24496a; }
+html[data-theme="dark"] .box-keypoint { background: #0f2a24; border-color: #1f5d4b; }
+html[data-theme="dark"] .box-pitfall { background: #2c1d10; border-color: #6b4220; }
+html[data-theme="dark"] .box-definition { background: #251b2a; border-color: #553f5e; }
+html[data-theme="dark"] .box-definition .box-title { color: #e09cc4; }
+html[data-theme="dark"] .quiz-opts label.right, html[data-theme="dark"] .pill.ok { background: #0f2a24; }
+html[data-theme="dark"] .quiz-opts label.wrong { background: #2c1d10; }
+html[data-theme="dark"] .pager-next.is-soon, html[data-theme="dark"] .empty-state { border-color: #3a4a59; }
+html[data-theme="dark"] .auth-form input, html[data-theme="dark"] .dash-tools input, html[data-theme="dark"] .mark-form input, html[data-theme="dark"] .mark-form select,
+html[data-theme="dark"] .ix-select select { background: #1d2a36; color: var(--ink); border-color: #3a4a59; }
+html[data-theme="dark"] .detail-box { background: #13202b; }
+html[data-theme="dark"] .continue-card { background: #1b5d8f; box-shadow: none; }
+html[data-theme="dark"] .continue-card:hover { background: #226aa1; }
+html[data-theme="dark"] .footer { background: #0b1d2d; }
+html[data-theme="dark"] .footer .brand-mark { color: #0b1d2d; }
+/* notebook figures keep their white card */
+html[data-theme="dark"] .fig-frame, html[data-theme="dark"] .plotly-holder { background: #fff; border-color: #fff; color: #1d232a; }
+/* the site's own interactive figures */
+html[data-theme="dark"] .ix-fig .ix { background: #141e28; border-color: #24496a; }
+html[data-theme="dark"] .ix-fig figcaption::before { color: #8ccaf3; }
+html[data-theme="dark"] .ix-btn { background: transparent; color: #a9d4f2; border-color: #2f5f85; }
+html[data-theme="dark"] .ix-readout .k-blue { color: #6bbcf0; } html[data-theme="dark"] .ix-readout .k-orange { color: #f2b733; }
+html[data-theme="dark"] .ix-readout .k-green { color: #3fc49a; } html[data-theme="dark"] .ix-readout .k-verm { color: #f08a3c; }
+html[data-theme="dark"] .ix-readout .k-purple { color: #e09cc4; }
+html[data-theme="dark"] .ix:not(.ix-light) [fill="#1d232a" i] { fill: #e3e9ef; } html[data-theme="dark"] .ix:not(.ix-light) [stroke="#1d232a" i] { stroke: #e3e9ef; }
+html[data-theme="dark"] .ix:not(.ix-light) [fill="#6b7680" i] { fill: #a6b4c1; } html[data-theme="dark"] .ix:not(.ix-light) [stroke="#6b7680" i] { stroke: #8a9aa8; }
+html[data-theme="dark"] .ix:not(.ix-light) [stroke="#e6ebef" i] { stroke: #263441; } html[data-theme="dark"] .ix:not(.ix-light) [fill="#e6ebef" i] { fill: #263441; }
+html[data-theme="dark"] .ix:not(.ix-light) [stroke="#9aa6b1" i] { stroke: #6d7e8e; } html[data-theme="dark"] .ix:not(.ix-light) [fill="#9aa6b1" i] { fill: #8796a4; }
+html[data-theme="dark"] .ix:not(.ix-light) [fill="#fff" i], html[data-theme="dark"] .ix:not(.ix-light) [fill="#ffffff" i], html[data-theme="dark"] .ix:not(.ix-light) [fill="white" i] { fill: #141e28; }
+html[data-theme="dark"] .ix:not(.ix-light) [stroke="#fff" i], html[data-theme="dark"] .ix:not(.ix-light) [stroke="#ffffff" i], html[data-theme="dark"] .ix:not(.ix-light) [stroke="white" i] { stroke: #141e28; }
+html[data-theme="dark"] .ix:not(.ix-light) [fill="#0072B2" i] { fill: #3d9ee0; } html[data-theme="dark"] .ix:not(.ix-light) [stroke="#0072B2" i] { stroke: #3d9ee0; }
+html[data-theme="dark"] .ix:not(.ix-light) [fill="#a87400" i], html[data-theme="dark"] .ix:not(.ix-light) [fill="#b37800" i] { fill: #f2b733; }
+html[data-theme="dark"] .ix:not(.ix-light) [stroke="#b37800" i] { stroke: #f2b733; }
+html[data-theme="dark"] .ix:not(.ix-light) [fill="#007a58" i] { fill: #3fc49a; } html[data-theme="dark"] .ix:not(.ix-light) [fill="#a35a00" i] { fill: #f08a3c; }
+html[data-theme="dark"] .ix:not(.ix-light) [fill="#a8558a" i] { fill: #e09cc4; }
+html[data-theme="dark"] .ix:not(.ix-light) [fill="#f5f7f9" i], html[data-theme="dark"] .ix:not(.ix-light) [fill="#e7eef4" i], html[data-theme="dark"] .ix:not(.ix-light) [fill="#f4f8fb" i] { fill: #1f2c38; }
+html[data-theme="dark"] .ix:not(.ix-light) [fill="#f3e6ee" i] { fill: #3a2534; } html[data-theme="dark"] .ix:not(.ix-light) [fill="#dbeaf5" i], html[data-theme="dark"] .ix:not(.ix-light) [fill="#cfe3f1" i] { fill: #1b3a55; }
+html[data-theme="dark"] .ix:not(.ix-light) [fill="#e3e8ec" i], html[data-theme="dark"] .ix:not(.ix-light) [fill="#d5dbe0" i], html[data-theme="dark"] .ix:not(.ix-light) [fill="#d9d9d9" i] { fill: #2d3b48; }
+html[data-theme="dark"] .ix:not(.ix-light) [stroke="#c3cad1" i] { stroke: #4a5a69; } html[data-theme="dark"] .ix:not(.ix-light) [fill="#c3cad1" i] { fill: #4a5a69; }
+html[data-theme="dark"] .ix:not(.ix-light) [fill="#f7e6c4" i] { fill: #3b2f14; } html[data-theme="dark"] .ix:not(.ix-light) [fill="#f6d3bd" i] { fill: #3d2414; }
+@media (max-width: 680px) {
+  html[data-theme="dark"] .tabbar { background: rgba(16, 24, 31, 0.96); border-color: var(--line); }
+  html[data-theme="dark"] .tab { color: #8496a6; }
+  html[data-theme="dark"] .tab[aria-current], html[data-theme="dark"] .tab-go { color: #8ccaf3; }
+  html[data-theme="dark"] .tab-go-ico { background: #2b86c5; }
+  html[data-theme="dark"] .lesson-bar { background: rgba(16, 24, 31, 0.96); }
+  html[data-theme="dark"] #toc-sheet { background: #18232e; }
+  html[data-theme="dark"] .toc a { color: var(--ink); }
+  html[data-theme="dark"] .app-promo-go { color: #0b2a44; }
+  .theme-btn { margin-left: auto; }
+  .search-open { margin-left: 0; }
+}
+
+/* Heat maps and matrices whose scales start at white keep a light card in dark mode. */
+html[data-theme="dark"] .ix-fig .ix.ix-light { background: #fff; color: #1d232a; border-color: #24496a; }
+html[data-theme="dark"] .ix.ix-light { --ink: #1d232a; --muted: #6b7680; --line: #e3e8ec; --blue: #0072B2; --blue-dark: #00508a; --bg: #fff; --bg-soft: #f5f7f9; }
+html[data-theme="dark"] .ix.ix-light .ix-btn { background: #fff; color: #00508a; border-color: #9cc3e0; }
+html[data-theme="dark"] .ix.ix-light .ix-btn[aria-pressed="true"] { background: #00508a; color: #fff; border-color: #00508a; }
+html[data-theme="dark"] .ix.ix-light .ix-readout .k-blue { color: #0072B2; } html[data-theme="dark"] .ix.ix-light .ix-readout .k-orange { color: #a87400; }
+html[data-theme="dark"] .ix.ix-light .ix-readout .k-green { color: #007a58; } html[data-theme="dark"] .ix.ix-light .ix-readout .k-verm { color: #a35a00; }
+html[data-theme="dark"] .ix.ix-light .ix-select select { background: #fff; color: #1d232a; border-color: #c3cad1; }
+html[data-theme="dark"] .ix.ix-light code, html[data-theme="dark"] .ix.ix-light pre { background: #f3f5f7; color: #1d232a; }

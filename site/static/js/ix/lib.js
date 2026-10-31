@@ -222,11 +222,14 @@
     return { svg, update };
   }
 
+  /* Figures whose colour scales run from white: in dark mode they stay on a light card. */
+  const LIGHT_CARD = new Set(["similarity-matrix", "v1-neuron", "matrix-explorer", "star-vs-at", "alignment", "place-field", "two-subfields", "contrast-surface"]);
   function mountAll() {
     document.querySelectorAll(".ix[data-ix]").forEach(host => {
       const f = registry[host.dataset.ix];
       if (!f || host.dataset.mounted) return;
       host.dataset.mounted = "1";
+      if (LIGHT_CARD.has(host.dataset.ix)) host.classList.add("ix-light");
       try { f(host); } catch (e) { console.error(e); host.textContent = "This interactive figure could not start."; }
       if (window.MAMBA_renderMath) window.MAMBA_renderMath(host);
     });

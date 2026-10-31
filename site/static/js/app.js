@@ -146,6 +146,11 @@
     if (isStandalone()) document.documentElement.classList.add("standalone");
     initTabs(); initPhoneSearch(); initLessonBar();
     document.addEventListener("click", e => { const t = e.target.closest("[data-install]"); if (t) { e.preventDefault(); install(); } });
+    document.addEventListener("click", e => {
+      const c = e.target.closest("[data-theme-cycle]"), s = e.target.closest("[data-theme-set]");
+      if (c && window.MAMBA_theme) window.MAMBA_theme.cycle();
+      if (s && window.MAMBA_theme) window.MAMBA_theme.set(s.dataset.themeSet);
+    });
     paintInstall();
     const save = $("#save-offline"), box = $("#offline-box");
     if (save && box && "caches" in window && "serviceWorker" in navigator) {
