@@ -246,7 +246,7 @@ def build():
     open(os.path.join(OUT, "static", "offline.json"), "w").write(json.dumps(offline))
     icon = lambda f, sz, purpose="any": {"src": f"static/img/{f}", "sizes": sz, "type": "image/png", "purpose": purpose}
     open(os.path.join(OUT, "manifest.webmanifest"), "w").write(json.dumps({
-        "name": C["title"], "short_name": C["short_title"], "id": "./",
+        "name": "MAMBA", "short_name": "MAMBA", "id": "./",
         "description": C["tagline"], "start_url": "./index.html?source=app", "scope": "./",
         "display": "standalone", "orientation": "any", "background_color": "#00508a", "theme_color": "#00508a",
         "lang": "en-GB", "categories": ["education"],
