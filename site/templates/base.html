@@ -2,34 +2,45 @@
 <html lang="en-GB">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{% block title %}{{ C.title }}{% endblock %}</title>
 <meta name="description" content="{% block description %}{{ C.tagline }}{% endblock %}">
 <meta name="author" content="{{ C.instructor.name }}">
 <meta name="theme-color" content="#00508a">
+<link rel="icon" href="{{ root }}static/img/icon.svg" type="image/svg+xml">
+<link rel="icon" href="{{ root }}static/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="manifest" href="{{ root }}manifest.webmanifest">
+<link rel="apple-touch-icon" href="{{ root }}static/img/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="MAMBA">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <link rel="stylesheet" href="{{ root }}static/css/site.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script>window.MAMBA = {root: "{{ root }}", lessons: {{ lessons | map(attribute='slug') | list | tojson }}, ready: {{ lessons | selectattr('ready') | map(attribute='slug') | list | tojson }},
-  quizCounts: {{ quiz_counts | tojson }}{% if accounts %}, sb: {url: {{ C.supabase.url | tojson }}, key: {{ C.supabase.anon_key | tojson }} }{% endif %} };</script>
+  quizCounts: {{ quiz_counts | tojson }},
+  titles: { {% for l in lessons %}{{ l.slug | tojson }}: {{ ('Lesson %d: %s' % (l.n, l.title)) | tojson }}{% if not loop.last %}, {% endif %}{% endfor %} }{% if accounts %}, sb: {url: {{ C.supabase.url | tojson }}, key: {{ C.supabase.anon_key | tojson }} }{% endif %} };</script>
 <script defer src="{{ root }}static/js/site.js"></script>
+<script defer src="{{ root }}static/js/app.js"></script>
 {% if accounts %}<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script defer src="{{ root }}static/js/auth.js"></script>{% endif %}
 {% block head %}{% endblock %}
 </head>
-<body class="{% block bodyclass %}{% endblock %}">
+<body class="{% block bodyclass %}{% endblock %}" data-tab="{% block tab %}{% endblock %}">
 <a class="skip" href="#content">Skip to content</a>
 <header class="topbar">
   <div class="topbar-in">
     {% block menubutton %}{% endblock %}
     <a class="brand" href="{{ root }}index.html"><span class="brand-mark" aria-hidden="true">M</span><span class="brand-name">MAMBA</span><span class="brand-sub">Mathematical Sciences for Brain Data</span></a>
     <nav class="topnav" aria-label="Main">
-      <a href="{{ root }}index.html#syllabus">Lessons</a>
+      <a href="{{ root }}lessons.html">Lessons</a>
       <a href="{{ root }}project.html">Project</a>
       <a href="{{ root }}resources.html">Resources</a>
     </nav>
+    <button class="search-open" type="button" aria-label="Search the course" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <div class="search" role="search">
       <label class="sr" for="q">Search the course</label>
       <input id="q" type="search" placeholder="Search the course" autocomplete="off">
@@ -39,6 +50,13 @@
   </div>
 </header>
 {% block body %}{% endblock %}
+<nav class="tabbar" aria-label="App">
+  <a class="tab" data-tab="home" href="{{ root }}index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg><span>Home</span></a>
+  <a class="tab" data-tab="lessons" href="{{ root }}lessons.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M13 4h5.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H13z"/></svg><span>Lessons</span></a>
+  <a class="tab tab-go" data-tab="continue" id="tab-continue" href="{{ root }}lessons/lesson01.html"><span class="tab-go-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z"/></svg></span><span id="tab-continue-label">Start</span></a>
+  <a class="tab" data-tab="project" href="{{ root }}project.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V8l8-4 8 4v12"/><path d="M9 20v-6h6v6"/></svg><span>Project</span></a>
+  <a class="tab" data-tab="me" href="{{ root }}account.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Me</span></a>
+</nav>
 <footer class="footer">
   <div class="footer-in">
     <div class="footer-grid">
@@ -51,6 +69,7 @@
         <p class="footer-head">Course</p>
         <ul>
           <li><a href="{{ root }}index.html#about">About</a></li>
+          <li><a href="{{ root }}lessons.html">All lessons</a></li>
           <li><a href="{{ root }}index.html#syllabus">Syllabus</a></li>
           <li><a href="{{ root }}project.html">Project</a></li>
           <li><a href="{{ root }}resources.html">Resources</a></li>
@@ -70,6 +89,7 @@
           <li><a href="{{ root }}index.html#instructor">Instructor</a></li>
           <li><a href="https://github.com/{{ C.repo }}">Course repository on GitHub</a></li>
           <li><a href="{{ root }}privacy.html">Privacy</a></li>
+          <li><a href="#" data-install hidden>Get the app</a></li>
         </ul>
       </nav>
     </div>

@@ -34,9 +34,17 @@
       btn.setAttribute("aria-pressed", String(isDone));
     }
     const start = document.getElementById("start-btn");
-    if (start && n > 0) {
-      const nextSlug = M.ready.find(s => !done.has(s));
-      if (nextSlug) { start.textContent = "Continue learning"; start.href = M.root + "lessons/" + nextSlug + ".html"; }
+    const nextSlug = M.ready.find(s => !done.has(s));
+    if (start && n > 0 && nextSlug) { start.textContent = "Continue learning"; start.href = M.root + "lessons/" + nextSlug + ".html"; }
+    // app tab bar and the Lessons page: where to go next
+    const tab = document.getElementById("tab-continue"), tabLabel = document.getElementById("tab-continue-label");
+    const card = document.getElementById("continue-card");
+    const href = nextSlug ? M.root + "lessons/" + nextSlug + ".html" : M.root + "lessons.html";
+    if (tab) { tab.href = href; tabLabel.textContent = n === 0 ? "Start" : nextSlug ? "Continue" : "Done"; }
+    if (card) {
+      card.href = href;
+      document.getElementById("cc-label").textContent = n === 0 ? "Start here" : nextSlug ? "Continue where you left off" : "Course complete. Well done!";
+      document.getElementById("cc-title").textContent = nextSlug ? (M.titles || {})[nextSlug] || "" : "Review any lesson below";
     }
   }
   function initProgress() {

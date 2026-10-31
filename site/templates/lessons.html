@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}All lessons | MAMBA{% endblock %}
+{% block description %}All {{ lessons|length }} lessons of {{ C.title }}, with your progress.{% endblock %}
+{% block bodyclass %}lessons-page{% endblock %}
+{% block tab %}lessons{% endblock %}
+{% block body %}
+<main id="content" class="page lessons-main">
+  <header class="page-head">
+    <h1>Lessons</h1>
+    <div class="lessons-progress">
+      <div class="progress" aria-live="polite"><div class="progress-bar"><span id="progress-fill"></span></div><span id="progress-text">0 of {{ lessons|length }} lessons complete</span></div>
+    </div>
+    <a class="continue-card" id="continue-card" href="{{ root }}lessons/lesson01.html">
+      <span class="cc-label" id="cc-label">Start here</span>
+      <span class="cc-title" id="cc-title">Lesson 1: {{ lessons[0].title }}</span>
+      <span class="cc-go" aria-hidden="true">&rarr;</span>
+    </a>
+  </header>
+  {% for p in parts %}
+  <section class="lp-part" id="part-{{ p.id }}" style="--part: {{ p.colour }}">
+    <h2><span class="part-dot"></span>Part {{ p.roman }}: {{ p.title }}</h2>
+    <ol class="lp-list">
+    {% for l in p.lessons %}
+      <li data-slug="{{ l.slug }}" class="{% if not l.ready %}soon{% endif %}">
+        {% if l.ready %}<a href="{{ root }}{{ l.url }}">{% else %}<span>{% endif %}
+          <span class="tick" aria-hidden="true"></span>
+          <span class="lp-n">{{ l.n }}</span>
+          <span class="lp-body"><span class="lp-title">{{ l.title }}</span><span class="lp-meta">{% if l.ready %}{{ l.minutes }} min{% else %}Coming soon{% endif %} · {{ l.topics[:3] | join(', ') }}</span></span>
+          {% if l.ready %}<span class="lp-chev" aria-hidden="true">&rsaquo;</span>{% endif %}
+        {% if l.ready %}</a>{% else %}</span>{% endif %}
+      </li>
+    {% endfor %}
+    </ol>
+  </section>
+  {% endfor %}
+  <section class="lp-part" style="--part: #4d5560">
+    <h2><span class="part-dot"></span>Capstone</h2>
+    <ol class="lp-list"><li><a href="{{ root }}project.html"><span class="lp-n">&#9733;</span><span class="lp-body"><span class="lp-title">Course project</span><span class="lp-meta">Answer a question about neural data with the mathematics of the course</span></span><span class="lp-chev" aria-hidden="true">&rsaquo;</span></a></li></ol>
+  </section>
+  <section class="offline-box" id="offline-box" hidden>
+    <h2>Use the course offline</h2>
+    <p>Save every lesson on this device, with its figures, so you can read and use the interactive figures without a connection. It takes about 18 MB of space.</p>
+    <button type="button" class="btn btn-primary" id="save-offline">Save all lessons for offline use</button>
+    <p class="muted small" id="offline-status" aria-live="polite"></p>
+    <p class="muted small">The Colab notebooks and signing in still need a connection.</p>
+  </section>
+  <section class="offline-box app-box" data-install-box hidden>
+    <h2>Get the app</h2>
+    <p>Install MAMBA on your phone or computer. It opens full screen from its own icon, keeps your place, and lessons you have opened work offline.</p>
+    <button type="button" class="btn btn-primary" data-install>Install the app</button>
+  </section>
+</main>
+{% endblock %}

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block bodyclass %}home{% endblock %}
+{% block tab %}home{% endblock %}
 {% block body %}
 <section class="hero">
   <div class="hero-in">
@@ -11,6 +12,11 @@
         <a class="btn btn-light" id="start-btn" href="{{ root }}lessons/lesson01.html">Start Lesson 1</a>
         <a class="btn btn-ghost" href="#syllabus">View the syllabus</a>
       </div>
+      <button type="button" class="app-promo" data-install hidden>
+        <img src="{{ root }}static/img/app-192.png" alt="" width="44" height="44">
+        <span class="app-promo-text"><strong>Get the MAMBA app</strong><span>Install it on your phone: full screen, and lessons you open work offline</span></span>
+        <span class="app-promo-go" aria-hidden="true">Install</span>
+      </button>
     </div>
     <ul class="hero-stats" aria-label="Course at a glance">
       <li><strong>{{ parts|length }}</strong> parts</li>

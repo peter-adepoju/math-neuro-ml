@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}You are offline | MAMBA{% endblock %}
+{% block body %}
+<main id="content" class="page">
+  <div class="empty-state offline-state">
+    <h1>You are offline</h1>
+    <p>This page has not been saved on your device yet. Lessons you have opened before, and any you saved from the Lessons page, still work.</p>
+    <p><a class="btn btn-primary" href="{{ root }}lessons.html">Go to your lessons</a></p>
+  </div>
+</main>
+{% endblock %}

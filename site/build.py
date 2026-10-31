@@ -225,6 +225,42 @@ def build():
                        "p": PARTS[l["part"]]["title"], "h": l["topics"], "x": ""} if not l["ready"] else None)
     search = [s for s in search if s]
     open(os.path.join(OUT, "static", "search.json"), "w").write(json.dumps(search))
+    # ---- the installable app: lessons list, offline page, manifest, service worker ----
+    for name in ["lessons", "offline"]:
+        open(os.path.join(OUT, f"{name}.html"), "w").write(env.get_template(f"{name}.html").render(**common, root=""))
+    offline = [l["url"] for l in lessons if l["ready"]]
+    for l in lessons:
+        if not l["ready"]:
+            continue
+        if os.path.exists(os.path.join(HERE, "static", "js", "ix", f"{l['slug']}.js")):
+            offline.append(f"static/js/ix/{l['slug']}.js")
+        adir = os.path.join(OUT, "assets", l["slug"])
+        if os.path.isdir(adir):
+            offline += [f"assets/{l['slug']}/{f}" for f in sorted(os.listdir(adir)) if not f.endswith(".svg")]
+    offline += ["static/js/ix/lib.js", "resources.html", "privacy.html", "project.html", "account.html", "static/search.json"]
+    kx = "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"       # the maths renderer and its fonts, so formulas show offline
+    offline += [kx + "katex.min.css", kx + "katex.min.js", "https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"]
+    offline += [kx + "fonts/KaTeX_" + f + ".woff2" for f in ("AMS-Regular Caligraphic-Bold Caligraphic-Regular Fraktur-Bold Fraktur-Regular "
+                "Main-Bold Main-BoldItalic Main-Italic Main-Regular Math-BoldItalic Math-Italic SansSerif-Bold SansSerif-Italic "
+                "SansSerif-Regular Script-Regular Size1-Regular Size2-Regular Size3-Regular Size4-Regular Typewriter-Regular").split()]
+    open(os.path.join(OUT, "static", "offline.json"), "w").write(json.dumps(offline))
+    icon = lambda f, sz, purpose="any": {"src": f"static/img/{f}", "sizes": sz, "type": "image/png", "purpose": purpose}
+    open(os.path.join(OUT, "manifest.webmanifest"), "w").write(json.dumps({
+        "name": C["title"], "short_name": C["short_title"], "id": "./",
+        "description": C["tagline"], "start_url": "./index.html?source=app", "scope": "./",
+        "display": "standalone", "orientation": "any", "background_color": "#00508a", "theme_color": "#00508a",
+        "lang": "en-GB", "categories": ["education"],
+        "icons": [icon("app-192.png", "192x192"), icon("app-512.png", "512x512"), icon("app-maskable-512.png", "512x512", "maskable")],
+        "shortcuts": [{"name": "Lessons", "url": "./lessons.html", "icons": [{"src": "static/img/app-192.png", "sizes": "192x192"}]},
+                      {"name": "My progress", "url": "./account.html", "icons": [{"src": "static/img/app-192.png", "sizes": "192x192"}]}],
+    }, indent=1))
+    import hashlib
+    hsh = hashlib.sha1()
+    for dp, _, fs in sorted(os.walk(OUT)):
+        for f in sorted(fs):
+            hsh.update(f.encode()); hsh.update(open(os.path.join(dp, f), "rb").read())
+    sw = open(os.path.join(HERE, "templates", "sw.js")).read().replace("__VERSION__", hsh.hexdigest()[:12])
+    open(os.path.join(OUT, "sw.js"), "w").write(sw)
     open(os.path.join(OUT, ".nojekyll"), "w").close()
     print(f"built {sum(l['ready'] for l in lessons)} lesson page(s) into {OUT}")
 

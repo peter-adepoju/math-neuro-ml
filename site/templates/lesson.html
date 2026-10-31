@@ -2,6 +2,7 @@
 {% block title %}Lesson {{ L.n }}: {{ L.title }} | MAMBA{% endblock %}
 {% block description %}{{ fm.summary or L.title }}{% endblock %}
 {% block bodyclass %}lesson-page{% endblock %}
+{% block tab %}lessons{% endblock %}
 {% block head %}<script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 <script defer src="{{ root }}static/js/ix/lib.js"></script>
 {% if ix_script %}<script defer src="{{ root }}{{ ix_script }}"></script>{% endif %}{% endblock %}
@@ -29,6 +30,12 @@
     {% endfor %}
   </nav>
   <main id="content" class="lesson" data-slug="{{ L.slug }}">
+    <button type="button" class="lesson-bar" aria-expanded="false" aria-controls="toc-sheet">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      <span class="lb-where" data-default="Lesson {{ L.n }}: {{ L.title }}">Lesson {{ L.n }}: {{ L.title }}</span>
+      <span class="lb-more">Contents</span>
+      <span class="lb-track" aria-hidden="true"><span class="lb-fill"></span></span>
+    </button>
     <nav class="crumbs" aria-label="Breadcrumb"><a href="{{ root }}index.html">Course</a> <span aria-hidden="true">/</span> <a href="{{ root }}index.html#part-{{ part.id }}">Part {{ part.roman }}: {{ part.title }}</a> <span aria-hidden="true">/</span> <span>Lesson {{ L.n }}</span></nav>
     <header class="lesson-head">
       <p class="lesson-kicker"><span class="part-chip">Part {{ part.roman }}: {{ part.title }}</span> Lesson {{ L.n }}</p>
@@ -64,11 +71,18 @@
       {% endif %}
     </nav>
   </main>
-  <aside class="toc" aria-label="On this page">
+  <aside class="toc" id="toc-sheet" aria-label="On this page">
+    <div class="sheet-grip" aria-hidden="true"></div>
     <p class="toc-title">On this page</p>
     <ol>
     {% for a, lvl, t in toc %}<li class="lvl{{ lvl }}"><a href="#{{ a }}">{{ t }}</a></li>{% endfor %}
     </ol>
+    <div class="toc-sheet-foot">
+      {% if prev %}<a class="btn btn-small" href="{{ root }}{{ prev.url }}">&larr; Lesson {{ prev.n }}</a>{% endif %}
+      <a class="btn btn-small" href="{{ root }}lessons.html">All lessons</a>
+      {% if next %}<a class="btn btn-small btn-primary" href="{{ root }}{{ next.url }}">Lesson {{ next.n }} &rarr;</a>{% endif %}
+    </div>
   </aside>
+  <div class="toc-backdrop" hidden></div>
 </div>
 {% endblock %}

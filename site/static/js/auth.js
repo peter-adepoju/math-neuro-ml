@@ -29,7 +29,7 @@
     const staff = profile && (profile.role === "tutor" || profile.role === "instructor");
     area.innerHTML = `<button class="acct-btn" type="button" aria-haspopup="true" aria-expanded="false"><span class="acct-avatar">${esc(initials)}</span><span class="sr">Account menu</span></button>
       <div class="acct-menu" hidden><p class="acct-name">${esc(name)}</p><p class="acct-email">${esc(user.email)}</p>
-      <a href="${M.root}account.html">My progress and scores</a>${staff ? `<a href="${M.root}dashboard.html">Instructor dashboard</a>` : ""}
+      <a href="${M.root}account.html">My progress and scores</a><a href="#" data-install${matchMedia("(display-mode: standalone)").matches || navigator.standalone ? " hidden" : ""}>Install the app</a>${staff ? `<a href="${M.root}dashboard.html">Instructor dashboard</a>` : ""}
       <button type="button" class="acct-out">Sign out</button></div>`;
     const btn = area.querySelector(".acct-btn"), menu = area.querySelector(".acct-menu");
     btn.addEventListener("click", e => { e.stopPropagation(); menu.hidden = !menu.hidden; btn.setAttribute("aria-expanded", String(!menu.hidden)); });

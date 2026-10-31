@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}My progress | MAMBA{% endblock %}
+{% block tab %}me{% endblock %}
 {% block head %}<script>window.MAMBA_LESSONS = {{ lessons | map(attribute='slug') | list | tojson }}; window.MAMBA_META = {{ lesson_meta | tojson }};</script>
 <script defer src="{{ root }}static/js/account.js"></script>{% endblock %}
 {% block body %}
