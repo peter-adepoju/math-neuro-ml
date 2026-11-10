@@ -26,15 +26,9 @@ instructor:
   bio:
     - >-
       Peter Adepoju is an applied mathematician and NeuroAI researcher who wants to understand how memory supports
-      learning and decision-making. He builds interpretable mathematical and computational models of neural mechanisms,
-      and uses what biological intelligence reveals to help design artificial intelligence that is more robust and adaptive.
-    - >-
-      He holds an M.Sc. in Applied Mathematics from the University of Cape Town and is an alumnus of the Simons
-      Computational Neuroscience Imbizo. He designed and wrote this course, including its notebooks, notes and
-      interactive figures.
-    - >-
-      Beyond research, Peter is passionate about teaching applied mathematics and enjoys discussing AI, emerging
-      technologies and their impact on the world.
+      learning and decision-making. He holds an M.Sc. in Applied Mathematics from the University of Cape Town and is
+      an alumnus of the Simons Computational Neuroscience Imbizo. He designed and wrote this course, including its
+      notebooks, notes and interactive figures.
   # icon: linkedin, github, scholar, x, medium or email
   links:
     - {icon: linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/peter-adepoju"}
