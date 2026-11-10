@@ -21,7 +21,8 @@ self.addEventListener("activate", (e) => {
 async function networkFirst(req) {
   const cache = await caches.open(SITE);
   try {
-    const res = await fetch(req);
+    // revalidate with the server so a new deploy shows up at once, not after the 10-minute HTTP cache
+    const res = await fetch(req.url, { cache: "no-cache", credentials: "same-origin" });
     if (res.ok) cache.put(req, res.clone());
     return res;
   } catch (err) {
