@@ -4,7 +4,7 @@
   --ink: #1d232a; --muted: #56606b; --line: #dde3e9; --bg: #ffffff; --bg-soft: #f5f7f9;
   --green: #009e73; --orange: #e69f00; --vermilion: #d55e00; --purple: #cc79a7; --sky: #56b4e9;
   --ok: #007a58; --bad: #b34700;
-  --sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif; --mono: "Source Code Pro", ui-monospace, monospace;
+  --head: "Cormorant Garamond", Georgia, "Times New Roman", serif; --sans: "Jost", "Helvetica Neue", "Segoe UI", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Menlo, monospace;
   --radius: 8px; --safe-top: env(safe-area-inset-top, 0px); --topbar: calc(60px + var(--safe-top));
 }
 * { box-sizing: border-box; }
@@ -13,9 +13,9 @@ body { margin: 0; font: 17px/1.65 var(--sans); color: var(--ink); background: va
 a { color: var(--blue); text-underline-offset: 0.15em; }
 a:hover { color: var(--blue-dark); }
 :focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
-h1, h2, h3, h4 { line-height: 1.25; margin: 1.6em 0 0.5em; font-weight: 700; }
-h1 { font-size: clamp(1.9rem, 3.6vw, 2.6rem); margin-top: 0; }
-h2 { font-size: 1.6rem; } h3 { font-size: 1.25rem; } h4 { font-size: 1.08rem; }
+h1, h2, h3, h4 { font-family: var(--head); line-height: 1.15; margin: 1.5em 0 0.45em; font-weight: 600; }
+h1 { font-size: clamp(2.3rem, 4.4vw, 3.2rem); margin-top: 0; }
+h2 { font-size: 2rem; } h3 { font-size: 1.5rem; } h4 { font-size: 1.28rem; }
 code { font-family: var(--mono); font-size: 0.9em; background: var(--bg-soft); padding: 0.08em 0.3em; border-radius: 4px; }
 pre { background: #f3f5f8; border: 1px solid var(--line); border-radius: var(--radius); padding: 0.9rem 1rem; overflow-x: auto; font-size: 0.92rem; }
 pre code { background: none; padding: 0; }
@@ -42,7 +42,7 @@ pre code { background: none; padding: 0; }
 .brand { display: flex; align-items: center; gap: 0.55rem; color: #fff; text-decoration: none; white-space: nowrap; }
 .brand:hover { color: #fff; }
 .brand-mark { width: 32px; height: 32px; border-radius: 7px; background: #fff; color: var(--blue-dark); display: grid; place-items: center; font-weight: 700; font-size: 1.15rem; }
-.brand-name { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.02em; }
+.brand-name { font: 700 1.5rem/1 var(--head); letter-spacing: 0.02em; }
 .brand-sub { font-size: 0.92rem; opacity: 0.85; }
 .topnav { display: flex; gap: 1.1rem; margin-left: auto; }
 .topnav a { color: #fff; text-decoration: none; font-weight: 600; }
@@ -509,7 +509,7 @@ html.standalone .app-promo, html.standalone [data-install], html.standalone [dat
   /* home */
   .hero-in { padding: 1.6rem 16px 1.4rem; }
   .hero-kicker { font-size: 0.9rem; }
-  .hero h1 { font-size: 1.85rem; }
+  .hero h1 { font-size: 2.3rem; }
   .hero-tag { font-size: 1.05rem; margin-bottom: 1.1rem; }
   .hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
   .hero-actions .btn { justify-content: center; text-align: center; padding: 0.8em 0.6em; }
