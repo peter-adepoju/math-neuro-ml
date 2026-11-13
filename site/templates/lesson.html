@@ -5,6 +5,7 @@
 {% block tab %}lessons{% endblock %}
 {% block head %}<script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
 <script defer src="{{ root }}static/js/ix/lib.js"></script>
+<script defer src="{{ root }}static/js/clip.js"></script>
 {% if ix_script %}<script defer src="{{ root }}{{ ix_script }}"></script>{% endif %}{% endblock %}
 {% block menubutton %}<button class="menu-btn" aria-controls="outline" aria-expanded="false"><span class="sr">Course outline</span><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" fill="none"/></svg></button>{% endblock %}
 {% block body %}

@@ -44,6 +44,7 @@
   titles: { {% for l in lessons %}{{ l.slug | tojson }}: {{ ('Lesson %d: %s' % (l.n, l.title)) | tojson }}{% if not loop.last %}, {% endif %}{% endfor %} }{% if accounts %}, sb: {url: {{ C.supabase.url | tojson }}, key: {{ C.supabase.anon_key | tojson }} }{% endif %} };</script>
 <script defer src="{{ root }}static/js/site.js"></script>
 <script defer src="{{ root }}static/js/app.js"></script>
+<script defer src="{{ root }}static/js/nbstore.js"></script>
 {% if accounts %}<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script defer src="{{ root }}static/js/auth.js"></script>{% endif %}
 {% block head %}{% endblock %}
@@ -56,6 +57,7 @@
     <a class="brand" href="{{ root }}index.html"><span class="brand-mark" aria-hidden="true">M</span><span class="brand-name">MAMBA</span><span class="brand-sub">Mathematical Sciences for Brain Data</span></a>
     <nav class="topnav" aria-label="Main">
       <a href="{{ root }}lessons.html">Lessons</a>
+      <a href="{{ root }}notebook.html">Notebook</a>
       <a href="{{ root }}project.html">Project</a>
       <a href="{{ root }}resources.html">Resources</a>
     </nav>
@@ -78,6 +80,7 @@
   <a class="tab" data-tab="home" href="{{ root }}index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg><span>Home</span></a>
   <a class="tab" data-tab="lessons" href="{{ root }}lessons.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M13 4h5.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H13z"/></svg><span>Lessons</span></a>
   <a class="tab tab-go" data-tab="continue" id="tab-continue" href="{{ root }}lessons/lesson01.html"><span class="tab-go-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z"/></svg></span><span id="tab-continue-label">Start</span></a>
+  <a class="tab" data-tab="notebook" href="{{ root }}notebook.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h11.5A1.5 1.5 0 0 1 19 5v14a1.5 1.5 0 0 1-1.5 1.5H6z"/><path d="M6 3.5v17M4 7.5h4M4 12h4M4 16.5h4M10.5 8h5"/></svg><span>Notebook</span></a>
   <a class="tab" data-tab="project" href="{{ root }}project.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V8l8-4 8 4v12"/><path d="M9 20v-6h6v6"/></svg><span>Project</span></a>
   <a class="tab" data-tab="me" href="{{ root }}account.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Me</span></a>
 </nav>
@@ -94,6 +97,7 @@
         <ul>
           <li><a href="{{ root }}index.html#about">About</a></li>
           <li><a href="{{ root }}lessons.html">All lessons</a></li>
+          <li><a href="{{ root }}notebook.html">My notebook</a></li>
           <li><a href="{{ root }}project.html">Project</a></li>
           <li><a href="{{ root }}resources.html">Resources</a></li>
         </ul>
