@@ -847,3 +847,15 @@ html[data-theme="dark"] .nb-item:hover, html[data-theme="dark"] .nb-icon:hover, 
 .fig-clip[disabled] { opacity: 0.5; }
 html[data-theme="dark"] .fig-clip { color: #8ccaf3; border-color: #2c5677; }
 @media print { .fig-clip, .clip-btn { display: none !important; } }
+.nb-drive { border: 1px solid var(--line); border-radius: 8px; padding: 0.65rem 0.75rem; background: var(--bg); font-size: 0.82rem; }
+.nb-drive p { margin: 0 0 0.35rem; } .nb-drive p:last-child { margin-bottom: 0; }
+.nbd-head { display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem; font-weight: 600; font-size: 0.88rem; }
+.nbd-head svg { width: 17px; height: 17px; color: var(--blue-dark); }
+.nbd-state { font-weight: 400; color: var(--muted); font-size: 0.78rem; }
+.nbd-state[data-s="done"]::before, .nbd-state[data-s="idle"]::before { content: "✓ "; color: var(--ok); }
+.nbd-state[data-s="reconnect"], .nbd-state[data-s="error"], .nbd-err { color: var(--bad); }
+.nbd-text { color: var(--muted); line-height: 1.4; overflow-wrap: anywhere; }
+.nbd-acts { display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; align-items: center; }
+.nbd-acts a, .nbd-link { font: inherit; font-size: 0.8rem; color: var(--blue-dark); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.nbd-connect { width: 100%; justify-content: center; }
+html[data-theme="dark"] .nbd-head svg, html[data-theme="dark"] .nbd-acts a, html[data-theme="dark"] .nbd-link { color: #8ccaf3; }

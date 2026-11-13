@@ -143,6 +143,7 @@
     lastSaved = html; dirty = false;
     const i = pages.findIndex(p => p.id === current.id); if (i >= 0) pages[i] = current; else pages.push(current);
     paintList(); status();
+    document.dispatchEvent(new CustomEvent("nb:saved", { detail: current }));
   }
   let syncWord = "local";
   function status(msg) {
@@ -184,6 +185,7 @@
     <ul><li>In any lesson, select some text and press <strong>Add to notebook</strong>. It lands on that lesson's page here, formulas and figures included, with a link back to where it came from.</li>
     <li>Write your own notes in between, with headings, lists, tables, colours, highlights, images and equations (the <strong>Σ</strong> button; click an equation to change it).</li>
     <li>Everything saves as you type. ${M.sb ? "Sign in and it is kept in your account too, on every device you use." : "It is kept in this browser."}</li>
+    ${window.MAMBA_GOOGLE ? "<li>Connect <strong>Google Drive</strong> (bottom left) and every page is also saved to your own Drive as a Google Doc and a Word file.</li>" : ""}
     <li>Use <strong>Export</strong> to download a page or the whole notebook as a Word document, a PDF, Markdown or a web page, or a backup you can restore later.</li></ul>
     <ul class="nb-check"><li data-done="1">Open the notebook</li><li data-done="0">Add something from Lesson 1</li></ul><p>&nbsp;</p>`;
 
@@ -453,6 +455,11 @@
   }
   async function toDocx(list) {
     toast("Preparing the Word document…", 20000);
+    const blob = await docxBlob(list);
+    download(blob, fileName(list, "docx"));
+    toast("Word document downloaded");
+  }
+  async function docxBlob(list) {
     await scripts(LIB.docx);
     const { Document, Packer, Paragraph, TextRun, Footer, AlignmentType, PageNumber, HeadingLevel } = window.docx;
     const body = exportBody(list, { breaks: true, checkboxes: true });
@@ -471,10 +478,8 @@
         children: content
       }]
     });
-    const blob = await Packer.toBlob(doc);
-    download(blob, fileName(list, "docx"));
     if (warnings.length) console.info("Word export notes:", warnings);
-    toast("Word document downloaded");
+    return Packer.toBlob(doc);
   }
   async function toPdf(list) {
     const html = standalone(list, true);
@@ -618,5 +623,5 @@
     NB.sync();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
-  window.MAMBA_notebook = { exportAs, get editor() { return editor; }, open, saveNow };
+  window.MAMBA_notebook = { exportAs, get editor() { return editor; }, open, saveNow, docxBlob, toast, get pages() { return pages; }, get current() { return current; } };
 })();

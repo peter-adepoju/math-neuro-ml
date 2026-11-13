@@ -3,7 +3,9 @@
 {% block description %}Your own notes from {{ C.title }}: clip from the lessons, write, and export to Word or PDF.{% endblock %}
 {% block bodyclass %}nb-body{% endblock %}
 {% block tab %}notebook{% endblock %}
-{% block head %}<script defer src="{{ root }}static/js/notebook.js"></script>{% endblock %}
+{% block head %}<script>window.MAMBA_GOOGLE = {{ (C.google_client_id or "") | tojson }};</script>
+<script defer src="{{ root }}static/js/notebook.js"></script>
+<script defer src="{{ root }}static/js/nbdrive.js"></script>{% endblock %}
 {% block body %}
 <main id="content" class="nb-page">
   <aside class="nb-side" id="nb-side" aria-label="Notebook pages">
@@ -15,6 +17,7 @@
     <label class="sr" for="nb-search">Search the notebook</label>
     <input type="search" id="nb-search" class="nb-search" placeholder="Search the notebook" autocomplete="off">
     <nav id="nb-list" class="nb-list"></nav>
+    <div class="nb-drive" id="nb-drive" hidden></div>
     <div class="nb-side-foot">
       <p class="nb-signin-note" id="nb-signin-note" hidden><a href="#" data-signin>Sign in</a> to keep your notebook in your account and see it on every device. Until then it is kept in this browser.</p>
       <p class="nb-tip">Tip: in any lesson, select text and press <strong>Add to notebook</strong>.</p>

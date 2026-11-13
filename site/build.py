@@ -237,7 +237,7 @@ def build():
         adir = os.path.join(OUT, "assets", l["slug"])
         if os.path.isdir(adir):
             offline += [f"assets/{l['slug']}/{f}" for f in sorted(os.listdir(adir)) if not f.endswith(".svg")]
-    offline += ["static/js/ix/lib.js", "notebook.html", "static/js/notebook.js", "static/js/nbstore.js", "static/js/clip.js", "resources.html", "privacy.html", "project.html", "account.html", "static/search.json"]
+    offline += ["static/js/ix/lib.js", "notebook.html", "static/js/notebook.js", "static/js/nbstore.js", "static/js/nbdrive.js", "static/js/clip.js", "resources.html", "privacy.html", "project.html", "account.html", "static/search.json"]
     kx = "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/"       # the maths renderer and its fonts, so formulas show offline
     offline += [kx + "katex.min.css", kx + "katex.min.js", "https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"]
     offline += [kx + "fonts/KaTeX_" + f + ".woff2" for f in ("AMS-Regular Caligraphic-Bold Caligraphic-Regular Fraktur-Bold Fraktur-Regular "
