@@ -17,7 +17,7 @@ site_url: "https://peter-adepoju.github.io/math-neuro-ml/"
 # Google sign-in client id for saving notebooks to learners' own Google Drive (public; leave empty to hide the option).
 # Google Cloud console -> APIs & Services -> Credentials -> OAuth client (Web). Needs the Drive API switched on and
 # https://peter-adepoju.github.io under Authorised JavaScript origins.
-google_client_id: ""
+google_client_id: "540784048317-8r4gdjgh57ojq71hh07sg85esq7r8dct.apps.googleusercontent.com"
 
 supabase:
   url: "https://znmpvbzsuwalkiushazg.supabase.co"
