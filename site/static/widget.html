@@ -27,7 +27,10 @@
   .mx-close{flex:none;background:transparent;border:1px solid rgba(255,255,255,.28);color:inherit;border-radius:9px;padding:6px 13px;cursor:pointer;font:600 14px system-ui}
   .mx-close:hover{background:rgba(255,255,255,.1)}
   .mx-stage{min-height:200px}
-  .plotly-holder{min-height:480px}
+  /* site.css paints generic containers white; force the Plotly stage dark so the
+     transparent WebGL/SVG canvas composites over dark, not white. */
+  .plotly-holder{min-height:480px;background:#111827 !important}
+  .plotly-holder .main-svg,.plotly-holder .svg-container{background:transparent !important}
   .mx-msg{font:500 14px/1.5 system-ui;opacity:.85;padding:30px 4px}
   .mx-msg a{color:var(--accent,#8ab4ff)}
 </style>
