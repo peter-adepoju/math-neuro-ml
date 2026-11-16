@@ -72,11 +72,7 @@ If $\mathbf{x}$ satisfies equations $E_1$ and $E_2$, it satisfies $E_2-cE_1$. Co
 
 **Worked example: a 3 × 3 system**
 
-$$\begin{aligned}2x_1+x_2+x_3&=4\\4x_1+3x_2+3x_3&=10\\8x_1+7x_2+9x_3&=24\end{aligned}
-\;\xrightarrow[\;R_3-4R_1\;]{\;R_2-2R_1\;}\;
-\begin{aligned}2x_1+x_2+x_3&=4\\x_2+x_3&=2\\3x_2+5x_3&=8\end{aligned}
-\;\xrightarrow{\;R_3-3R_2\;}\;
-\begin{aligned}2x_1+x_2+x_3&=4\\x_2+x_3&=2\\2x_3&=2\end{aligned}$$
+$$\begin{aligned}2x_1+x_2+x_3&=4\\4x_1+3x_2+3x_3&=10\\8x_1+7x_2+9x_3&=24\end{aligned} \;\xrightarrow[\;R_3-4R_1\;]{\;R_2-2R_1\;}\; \begin{aligned}2x_1+x_2+x_3&=4\\x_2+x_3&=2\\3x_2+5x_3&=8\end{aligned} \;\xrightarrow{\;R_3-3R_2\;}\; \begin{aligned}2x_1+x_2+x_3&=4\\x_2+x_3&=2\\2x_3&=2\end{aligned}$$
 
 **Back substitution:** $x_3=1$, then $x_2=2-1=1$, then $x_1=(4-1-1)/2=1$.
 
@@ -154,9 +150,7 @@ Squaring makes every error count as positive and punishes big misses more than s
 
 $\hat{\mathbf{x}}$ minimises the squared residual if and only if the residual is orthogonal to every column of $\mathbf{A}$:
 
-$$\mathbf{A}^{\mathsf T}(\mathbf{b}-\mathbf{A}\hat{\mathbf{x}})=\mathbf{0}
-\qquad\Longleftrightarrow\qquad
-\mathbf{A}^{\mathsf T}\mathbf{A}\,\hat{\mathbf{x}}=\mathbf{A}^{\mathsf T}\mathbf{b}\quad\text{(the normal equations).}$$
+$$\mathbf{A}^{\mathsf T}(\mathbf{b}-\mathbf{A}\hat{\mathbf{x}})=\mathbf{0} \qquad\Longleftrightarrow\qquad \mathbf{A}^{\mathsf T}\mathbf{A}\,\hat{\mathbf{x}}=\mathbf{A}^{\mathsf T}\mathbf{b}\quad\text{(the normal equations).}$$
 
 If the columns of $\mathbf{A}$ are independent, $\mathbf{A}^{\mathsf T}\mathbf{A}$ is invertible and $\hat{\mathbf{x}}=(\mathbf{A}^{\mathsf T}\mathbf{A})^{-1}\mathbf{A}^{\mathsf T}\mathbf{b}$ is unique. Geometrically, $\mathbf{A}\hat{\mathbf{x}}$ is the projection of $\mathbf{b}$ onto the column space. ("Normal" here means perpendicular.)
 

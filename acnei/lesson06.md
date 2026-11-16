@@ -26,9 +26,7 @@
 
 Two neurons excite and inhibit each other. Their rates, relative to baseline, form $\mathbf{x}_t\in\mathbb{R}^2$, and each time step applies the same weight matrix: $\mathbf{x}_{t+1}=\mathbf{W}\mathbf{x}_t$, so $\mathbf{x}_t=\mathbf{W}^t\mathbf{x}_0$. Lesson 4 described what a matrix does *once*. Recurrent circuits apply it again and again, and three small matrices already show three fates:
 
-$$\mathbf{W}_{\text{decay}}=\begin{pmatrix}0.6&0.2\\0.1&0.7\end{pmatrix},\qquad
-\mathbf{W}_{\text{grow}}=\begin{pmatrix}0.9&0.4\\0.2&1.0\end{pmatrix},\qquad
-\mathbf{W}_{\text{osc}}=0.95\,\mathbf{R}(20^\circ).$$
+$$\mathbf{W}_{\text{decay}}=\begin{pmatrix}0.6&0.2\\0.1&0.7\end{pmatrix},\qquad \mathbf{W}_{\text{grow}}=\begin{pmatrix}0.9&0.4\\0.2&1.0\end{pmatrix},\qquad \mathbf{W}_{\text{osc}}=0.95\,\mathbf{R}(20^\circ).$$
 
 ![The same starting perturbation under the three weight matrices, for neuron 1 (solid) and neuron 2 (dashed). The panel titles give the eigenvalues: both inside the unit circle (decay, left), one outside (growth, middle), and a complex pair of modulus 0.95 (a decaying oscillation, right).](https://peter-adepoju.github.io/math-neuro-ml/assets/lesson06/cell007_1.svg)
 *The same starting perturbation under the three weight matrices, for neuron 1 (solid) and neuron 2 (dashed). The panel titles give the eigenvalues: both inside the unit circle (decay, left), one outside (growth, middle), and a complex pair of modulus 0.95 (a decaying oscillation, right).*
@@ -71,8 +69,7 @@ For an $n\times n$ matrix the left side is a polynomial of degree $n$, so there 
 
 For a $2\times2$ matrix,
 
-$$\lambda^2-(\operatorname{tr}\mathbf{A})\,\lambda+\det\mathbf{A}=0,\qquad
-\lambda=\frac{\operatorname{tr}\mathbf{A}\pm\sqrt{\operatorname{tr}^2\mathbf{A}-4\det\mathbf{A}}}{2},$$
+$$\lambda^2-(\operatorname{tr}\mathbf{A})\,\lambda+\det\mathbf{A}=0,\qquad \lambda=\frac{\operatorname{tr}\mathbf{A}\pm\sqrt{\operatorname{tr}^2\mathbf{A}-4\det\mathbf{A}}}{2},$$
 
 and for any square matrix, $\lambda_1+\cdots+\lambda_n=\operatorname{tr}\mathbf{A}$ and $\lambda_1\cdots\lambda_n=\det\mathbf{A}$.
 
@@ -132,8 +129,7 @@ A real $2\times2$ matrix with complex eigenvalues $re^{\pm i\theta}$ acts, in su
 
 Let $\lambda=re^{i\theta}$ with $\theta\neq0$ and eigenvector $\mathbf{v}=\mathbf{p}+i\mathbf{q}$ ($\mathbf{p},\mathbf{q}$ real). Take the real and imaginary parts of $\mathbf{A}\mathbf{v}=\lambda\mathbf{v}$, with $\lambda=r\cos\theta+ir\sin\theta$:
 
-$$\mathbf{A}\mathbf{p}=r\cos\theta\,\mathbf{p}-r\sin\theta\,\mathbf{q},\qquad
-\mathbf{A}\mathbf{q}=r\sin\theta\,\mathbf{p}+r\cos\theta\,\mathbf{q}.$$
+$$\mathbf{A}\mathbf{p}=r\cos\theta\,\mathbf{p}-r\sin\theta\,\mathbf{q},\qquad \mathbf{A}\mathbf{q}=r\sin\theta\,\mathbf{p}+r\cos\theta\,\mathbf{q}.$$
 
 In the basis $(\mathbf{p},\mathbf{q})$ the matrix is therefore $r\begin{pmatrix}\cos\theta&\sin\theta\\-\sin\theta&\cos\theta\end{pmatrix}=r\,\mathbf{R}(-\theta)$: a rotation and a uniform scaling.
 

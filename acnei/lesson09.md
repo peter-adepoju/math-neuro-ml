@@ -165,8 +165,7 @@ A forward difference is a central difference for the midpoint $x+h/2$, so it est
 
 Extending the linear approximation by curvature terms (Taylor's theorem, Lesson 11): $f(x\pm h)=f(x)\pm f'(x)h+\tfrac12f''(x)h^2\pm\tfrac16f'''(x)h^3+\cdots$ Then
 
-$$\frac{f(x+h)-f(x)}{h}=f'(x)+\tfrac12f''(x)h+\cdots,\qquad
-\frac{f(x+h)-f(x-h)}{2h}=f'(x)+\tfrac16f'''(x)h^2+\cdots,$$
+$$\frac{f(x+h)-f(x)}{h}=f'(x)+\tfrac12f''(x)h+\cdots,\qquad \frac{f(x+h)-f(x-h)}{2h}=f'(x)+\tfrac16f'''(x)h^2+\cdots,$$
 
 because in the central difference the even terms ($f(x)$ and $\tfrac12f''h^2$) cancel. Applying the central formula around the midpoint $m=x+h/2$ with half-step $h/2$ gives $\frac{f(m+h/2)-f(m-h/2)}{h}$, which is exactly the forward difference.
 
@@ -174,8 +173,7 @@ because in the central difference the even terms ($f(x)$ and $\tfrac12f''h^2$) c
 
 Each computed value of $f$ carries a rounding error of relative size $\varepsilon\approx10^{-16}$, which a difference quotient divides by $h$. The total error is roughly truncation plus rounding:
 
-$$\text{forward: }\tfrac12\lvert f''\rvert h+\frac{2\varepsilon\lvert f\rvert}{h},\qquad
-\text{central: }\tfrac16\lvert f'''\rvert h^2+\frac{\varepsilon\lvert f\rvert}{h}.$$
+$$\text{forward: }\tfrac12\lvert f''\rvert h+\frac{2\varepsilon\lvert f\rvert}{h},\qquad \text{central: }\tfrac16\lvert f'''\rvert h^2+\frac{\varepsilon\lvert f\rvert}{h}.$$
 
 Minimising over $h$ gives $h_{\text{opt}}\sim\sqrt\varepsilon\approx10^{-8}$ (forward) and $h_{\text{opt}}\sim\varepsilon^{1/3}\approx10^{-5}$ (central), with best errors of about $10^{-8}$ and $10^{-11}$ respectively.
 

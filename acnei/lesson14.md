@@ -35,8 +35,7 @@ How sensitive is the rate to position? The answer depends on the direction of th
 
 **Definition: partial derivative**
 
-$$\frac{\partial f}{\partial x}(x,y)=\lim_{h\to0}\frac{f(x+h,y)-f(x,y)}h ,\qquad
-\frac{\partial f}{\partial y}(x,y)=\lim_{h\to0}\frac{f(x,y+h)-f(x,y)}h .$$
+$$\frac{\partial f}{\partial x}(x,y)=\lim_{h\to0}\frac{f(x+h,y)-f(x,y)}h ,\qquad \frac{\partial f}{\partial y}(x,y)=\lim_{h\to0}\frac{f(x,y+h)-f(x,y)}h .$$
 
 Hold the other inputs fixed and differentiate as in Lesson 9. Geometrically: the slope of the slice of the surface parallel to that input's axis.
 

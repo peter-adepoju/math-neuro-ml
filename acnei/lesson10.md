@@ -83,10 +83,7 @@ A value used by several nodes (**fan-out**) receives the **sum** of the derivati
 
 For the example:
 
-$$\frac{\partial L}{\partial r}=r-y,\quad
-\frac{\partial L}{\partial z}=(r-y)\,r_{\max}\sigma'(z),\quad
-\frac{\partial L}{\partial w}=\frac{\partial L}{\partial z}\,x,\quad
-\frac{\partial L}{\partial b}=\frac{\partial L}{\partial z}.$$
+$$\frac{\partial L}{\partial r}=r-y,\quad \frac{\partial L}{\partial z}=(r-y)\,r_{\max}\sigma'(z),\quad \frac{\partial L}{\partial w}=\frac{\partial L}{\partial z}\,x,\quad \frac{\partial L}{\partial b}=\frac{\partial L}{\partial z}.$$
 
 With $w=1.2$, $b=-1$, $x=2$ and $y=30$: $r=40.1$, $\partial L/\partial z=80.2$, $\partial L/\partial w=160.4$ and $\partial L/\partial b=80.2$, matching central differences.
 
@@ -112,9 +109,7 @@ Example: $f=a^2+2a$ uses $a$ in two places, and $f'(a)=2a+2$. At $a=3$ the noteb
 
 For a layer $\mathbf{z}=\mathbf{W}\mathbf{a}+\mathbf{b}$ ($\mathbf{W}$ of shape $(n_{\text{out}},n_{\text{in}})$) with upstream gradient $\boldsymbol\delta=\partial L/\partial\mathbf{z}$:
 
-$$\frac{\partial L}{\partial\mathbf{W}}=\boldsymbol\delta\,\mathbf{a}^{\mathsf T},\qquad
-\frac{\partial L}{\partial\mathbf{b}}=\boldsymbol\delta,\qquad
-\frac{\partial L}{\partial\mathbf{a}}=\mathbf{W}^{\mathsf T}\boldsymbol\delta .$$
+$$\frac{\partial L}{\partial\mathbf{W}}=\boldsymbol\delta\,\mathbf{a}^{\mathsf T},\qquad \frac{\partial L}{\partial\mathbf{b}}=\boldsymbol\delta,\qquad \frac{\partial L}{\partial\mathbf{a}}=\mathbf{W}^{\mathsf T}\boldsymbol\delta .$$
 
 Through an elementwise activation $\mathbf{a}'=\phi(\mathbf{z})$: $\dfrac{\partial L}{\partial\mathbf{z}}=\dfrac{\partial L}{\partial\mathbf{a}'}\odot\phi'(\mathbf{z})$.
 
