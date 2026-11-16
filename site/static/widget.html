@@ -27,6 +27,9 @@
   .mx-close{flex:none;background:transparent;border:1px solid rgba(255,255,255,.28);color:inherit;border-radius:9px;padding:6px 13px;cursor:pointer;font:600 14px system-ui}
   .mx-close:hover{background:rgba(255,255,255,.1)}
   .mx-stage{min-height:200px}
+  /* Interactive (ix) figures are authored with dark text for a light page, so
+     render them on a white paper panel; on the dark card their labels wash out. */
+  .mx-stage.ix-paper{background:#fff;color:#111827;border-radius:10px;padding:16px}
   .plotly-holder{min-height:480px}
   .mx-msg{font:500 14px/1.5 system-ui;opacity:.85;padding:30px 4px}
   .mx-msg a{color:var(--accent,#8ab4ff)}
@@ -85,6 +88,7 @@
     var holder = document.createElement("div");
     holder.className = "ix";
     holder.setAttribute("data-ix", ixName);
+    stage.classList.add("ix-paper");
     stage.appendChild(holder);
     loadScript("./js/ix/lib.js")
       .then(function () { return loadScript("./js/ix/lesson" + lesson + ".js"); })
