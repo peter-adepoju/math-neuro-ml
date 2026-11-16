@@ -75,6 +75,45 @@
       document.head.appendChild(s);
     });
   }
+  // Re-theme a Plotly figure (authored for a light background) to match the dark
+  // modal: transparent backgrounds + light text/axes/grids. Trace colours live on
+  // the data and are left untouched.
+  function darkenLayout(L) {
+    L = L || {};
+    var FG = "#e5e7eb", GRID = "rgba(255,255,255,0.16)", ZERO = "rgba(255,255,255,0.32)", PANEL = "rgba(255,255,255,0.08)";
+    L.paper_bgcolor = "rgba(0,0,0,0)";
+    L.plot_bgcolor = "rgba(0,0,0,0)";
+    L.font = L.font || {}; L.font.color = FG;
+    L.legend = L.legend || {}; L.legend.bgcolor = "rgba(0,0,0,0)";
+    L.legend.font = L.legend.font || {}; L.legend.font.color = FG;
+    function axis(a) {
+      a = a || {};
+      a.color = FG; a.gridcolor = GRID; a.zerolinecolor = ZERO; a.linecolor = GRID;
+      a.tickfont = a.tickfont || {}; a.tickfont.color = FG;
+      return a;
+    }
+    L.xaxis = axis(L.xaxis); L.yaxis = axis(L.yaxis);
+    if (L.scene) {
+      L.scene.bgcolor = "rgba(0,0,0,0)";
+      ["xaxis", "yaxis", "zaxis"].forEach(function (k) {
+        var a = L.scene[k] = L.scene[k] || {};
+        a.color = FG; a.gridcolor = GRID; a.zerolinecolor = ZERO;
+        a.backgroundcolor = "rgba(0,0,0,0)"; a.showbackground = false;
+        a.tickfont = a.tickfont || {}; a.tickfont.color = FG;
+      });
+    }
+    (L.sliders || []).forEach(function (s) {
+      s.font = s.font || {}; s.font.color = FG;
+      s.bgcolor = PANEL; s.bordercolor = GRID; s.tickcolor = FG;
+      s.currentvalue = s.currentvalue || {};
+      s.currentvalue.font = s.currentvalue.font || {}; s.currentvalue.font.color = FG;
+    });
+    (L.updatemenus || []).forEach(function (u) {
+      u.font = u.font || {}; u.font.color = FG;
+      u.bgcolor = PANEL; u.bordercolor = GRID;
+    });
+    return L;
+  }
 
   if (!lesson || (!ixName && !plotly)) {
     fail("No figure was specified.");
@@ -112,7 +151,7 @@
       .then(function (r) { if (!r.ok) throw new Error("http " + r.status); return r.json(); })
       .then(function (fig) {
         var cfg = { responsive: true, displaylogo: false, scrollZoom: true };
-        return Plotly.newPlot(ph, fig.data || [], fig.layout || {}, cfg).then(function () {
+        return Plotly.newPlot(ph, fig.data || [], darkenLayout(fig.layout || {}), cfg).then(function () {
           if (Array.isArray(fig.frames) && fig.frames.length) return Plotly.addFrames(ph, fig.frames);
         });
       })
