@@ -169,8 +169,9 @@ def build():
         shutil.rmtree(OUT)
     os.makedirs(os.path.join(OUT, "lessons"))
     shutil.copytree(os.path.join(HERE, "static"), os.path.join(OUT, "static"))
-    shutil.copytree(os.path.join(HERE, "assets"), os.path.join(OUT, "assets"),
-                    ignore=shutil.ignore_patterns("*.svg"))       # SVG figures are inlined in the pages
+    shutil.copytree(os.path.join(HERE, "assets"), os.path.join(OUT, "assets"))
+    # NB: figure SVGs are inlined in the lesson pages, but we also publish the raw
+    # .svg files so they can be embedded elsewhere (e.g. the ACNEI classroom).
     env = Environment(loader=FileSystemLoader(os.path.join(HERE, "templates")), autoescape=False)
     accounts = bool((C.get("supabase") or {}).get("url") and (C.get("supabase") or {}).get("anon_key"))
     quiz_counts = {}
