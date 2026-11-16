@@ -91,7 +91,15 @@
       .then(function () { return loadScript("./js/ix/lesson" + lesson + ".js"); })
       .then(function () {
         try { if (window.IX && IX.mountAll) IX.mountAll(); } catch (e) {}
-        if (!holder.querySelector("svg")) fail("This interactive figure could not be loaded here.");
+        // Some widgets (the animated "player" panels, e.g. two-conditions,
+        // linked-traces) build their SVG on a timer after mounting, so poll
+        // for the rendered content before deciding it failed.
+        var tries = 0;
+        (function waitForMount() {
+          if (holder.querySelector("svg") || holder.querySelector("canvas") || holder.innerHTML.length > 80) return;
+          if (++tries > 40) { fail("This interactive figure could not be loaded here."); return; }
+          setTimeout(waitForMount, 150);
+        })();
       })
       .catch(function () { fail("This interactive figure could not be loaded here."); });
   } else {
