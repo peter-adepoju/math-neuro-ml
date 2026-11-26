@@ -1,0 +1,20 @@
+# Keeps the Supabase project from pausing.
+# Supabase's free tier pauses a project after 7 days with no activity.
+# This sends one harmless request every 3 days so the project stays active.
+# The URL and key below are the public "anon" values already in site/course.yaml,
+# so there is nothing secret here.
+name: Keep Supabase awake
+on:
+  schedule:
+    - cron: "17 4 */3 * *"   # every 3 days at 04:17 UTC (well inside the 7-day limit)
+  workflow_dispatch:          # lets you also run it by hand from the Actions tab
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the database
+        run: |
+          code=$(curl -sS -o /dev/null -w "%{http_code}" \
+            "https://znmpvbzsuwalkiushazg.supabase.co/rest/v1/" \
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpubXB2YnpzdXdhbGtpdXNoYXpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4NTI0NjIsImV4cCI6MjEwODQyODQ2Mn0.a4H_MtnIE-H4sEeBcxTYq-QiPvfdZKMuWBjLXv_C8OE")
+          echo "Supabase replied with HTTP $code"
